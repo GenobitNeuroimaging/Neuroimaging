@@ -121,18 +121,10 @@ Neuroimaging/
 ├── data/                     # Local data; excluded from Git
 │   └── raw/                  # Downloaded/extracted OASIS-1 data
 ├── notebooks/
-│   ├── 1_download_data.ipynb # Documented data acquisition workflow
-│   └── test1.ipynb           # Existing exploratory notebook
 ├── scripts/
-│   ├── download_oasis1.py    # Command-line data acquisition
-│   ├── check_bib.py          # Bibliography checking
-│   ├── saving_images.py      # Image-related script
-│   └── test_reading.py       # Data-reading script
 ├── src/
 │   └── Neuroimaging/
 │       ├── __init__.py
-│       ├── download.py       # Shared download and extraction functions
-│       └── saving_images_function.py
 ├── quarto/
 │   ├── _quarto.yaml          # Quarto project configuration
 │   └── reports/              # Report sources
