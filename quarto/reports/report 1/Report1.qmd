@@ -37,9 +37,8 @@ format:
 
 \large 
 
-\begin{tabular}{rl}
- Raúl Gómez Muñoz & L0XXXXXXX \\
- Blanca Rosa Ruiz Hernández & L0XXXXXXX \\
+\begin{tabular}{c}
+ Diego Nicolas Gomez Martinez\\
 \end{tabular}
 \par
 
