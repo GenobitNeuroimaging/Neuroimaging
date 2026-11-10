@@ -129,7 +129,7 @@ Neuroimaging/
 │   ├── _quarto.yaml          # Quarto project configuration
 │   └── reports/              # Report sources
 ├── docs/
-│   ├── manuscript/           # LaTeX manuscript sources and figures
+│   ├── manuscript/           # LaTeX manuscript: v1/ (sources, figures), tables/ (shared)
 │   └── reports/              # Report outputs
 └── references.bib            # Bibliographic references
 ```

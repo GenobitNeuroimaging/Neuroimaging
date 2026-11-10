@@ -1,12 +1,16 @@
 # Manuscript build. Run from the repository root:
-#   make pdf     build docs/manuscript/build/main.pdf
+#   make pdf     build docs/manuscript/$(VERSION)/build/main.pdf
 #   make watch   rebuild on every save
-#   make clean   remove docs/manuscript/build/
+#   make clean   remove docs/manuscript/$(VERSION)/build/
+#
+# VERSION selects the manuscript version (default v1): `make pdf VERSION=v2`.
 #
 # Uses a local latexmk if available (also the case inside the devcontainer);
 # otherwise builds inside the Docker image. Force Docker with `make pdf DOCKER=1`.
 
-MANUSCRIPT := docs/manuscript
+VERSION    ?= v1
+BUILD_CTX  := docs/manuscript
+MANUSCRIPT := $(BUILD_CTX)/$(VERSION)
 IMAGE      := neuroimaging-latex:tl2025
 PLATFORM   := linux/amd64
 
@@ -40,4 +44,4 @@ clean:
 image:
 	@command -v docker >/dev/null 2>&1 || { \
 	  echo "Neither latexmk nor docker found. Install one (see CONTRIBUTING.md) or use Codespaces."; exit 1; }
-	docker build --platform $(PLATFORM) -t $(IMAGE) $(MANUSCRIPT)
+	docker build --platform $(PLATFORM) -t $(IMAGE) $(BUILD_CTX)

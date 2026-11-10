@@ -1,5 +1,5 @@
 # latexmk configuration for the manuscript.
-# Run from docs/manuscript/:  latexmk        (single build)
+# Run from docs/manuscript/v1/: latexmk        (single build)
 #                             latexmk -pvc   (rebuild on save)
 #                             latexmk -C     (remove build/)
 

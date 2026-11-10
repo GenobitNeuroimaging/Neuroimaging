@@ -26,11 +26,11 @@ Changes outside the manuscript (code, scripts, CI, build setup) follow the same 
 | Docker, no LaTeX                             | `make pdf` (uses the Docker image)                                     |
 | Neither                                      | _Code → Codespaces → Create codespace_ on your branch, then `make pdf` |
 
-The result is `docs/manuscript/build/main.pdf`. It is a build artifact, so never commit it. `make watch` rebuilds on every save and `make clean` removes `build/`. Don't run `make` while your editor is also compiling: both write to `build/` and corrupt it.
+The result is `docs/manuscript/v1/build/main.pdf`. It is a build artifact, so never commit it. `make watch` rebuilds on every save and `make clean` removes `build/`. Don't run `make` while your editor is also compiling: both write to `build/` and corrupt it.
 
 ## Where to write
 
-Everything is in `docs/manuscript/`. Leave `main.tex` and `preamble.tex` alone unless your change is about the document setup.
+Everything is in `docs/manuscript/v1/` (first manuscript version; later versions get their own `vN/` folder, build one with `make pdf VERSION=vN`). Tables go in `docs/manuscript/tables/` as `.tex` files shared by all versions, included with `\input{../tables/<name>}`. Leave `main.tex` and `preamble.tex` alone unless your change is about the document setup.
 
 | Content                                  | File                                                        |
 | ---------------------------------------- | ----------------------------------------------------------- |

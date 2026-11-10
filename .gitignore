@@ -25,9 +25,9 @@ build/
 **/.jupyter_ystore.db
 output/
 
-# LaTeX (manuscript builds go to docs/manuscript/build/; these catch
+# LaTeX (manuscript builds go to docs/manuscript/<version>/build/; these catch
 # stray outputs from running pdflatex directly). Figures in figures/ are kept.
-/docs/manuscript/*.pdf
+/docs/manuscript/v*/*.pdf
 *.aux
 *.bbl
 *.bcf
