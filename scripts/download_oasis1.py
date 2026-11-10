@@ -1,8 +1,16 @@
 """
 Download and safely extract OASIS-1 raw MRI archives.
 
-To download the entire dataset: uv run python scripts/download_oasis1.py
-To download selected discs: uv run python scripts/download_oasis1.py --discs 1 2 3
+This script is located in <project root>/scripts.
+By default, the dataset is extracted into <project root>/data/raw.
+
+To download the entire dataset:
+    uv run python scripts/download_oasis1.py
+    
+To download selected discs:
+    uv run python scripts/download_oasis1.py --discs 1 2 3
+    
+See --help for additional options.
 
 By default the destination is data/raw
 location in <project root>/scripts. See --help for options.

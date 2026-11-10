@@ -2,7 +2,14 @@
 name = "Neuroimaging"
 version = "0.1.0"
 description = ""
-authors = [{ name = "Raul Gomez", email = "rgomez@tec.mx" }]
+authors = [
+    { name = "Diego Nicolas Gomez Martinez", email = "a00845905@tec.mx"
+    name = "Mateo Rodolfo Flores Torres", email = "a01783438@tec.mx"
+    name = "Emiliano Hervert de la Cruz", email = "a01412606@tec.mx"
+    name = "Angel Eduardo Luna Leija", email = "a00842657@tec.mx"
+    name = "Azul Fernanda Paniagua Bucio", email = "a01424351@tec.mx"
+    name = "Andrea Estefanía de la Peña Contreras", email = "a00840973@tec.mx" }
+    ]
 requires-python = ">=3.11"
 dependencies = [
     "matplotlib>=3.11.2",
