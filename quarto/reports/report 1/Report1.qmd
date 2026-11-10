@@ -36,11 +36,11 @@ format:
 \large 
 
 \begin{tabular}{c}
- Diego Nicolas Gomez Martinez
- Mateo Rodolfo Flores Torres  
- miliano Hervert de la Cruz  
- Angel Eduardo Luna Leija  
- Azul Fernanda Paniagua Bucio  
+ Diego Nicolas Gomez Martinez\\
+ Mateo Rodolfo Flores Torres\\
+ miliano Hervert de la Cruz\\
+ Angel Eduardo Luna Leija\\
+ Azul Fernanda Paniagua Bucio\\
  Andrea Estefanía de la Peña Contreras\\
 \end{tabular}
 \par
