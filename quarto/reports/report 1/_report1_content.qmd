@@ -13,18 +13,24 @@ MRI session exists in its own directory labeled by the subject ID. The random su
 OAS1_xxxx, where ‘xxxx’ represents a number from 00001 to 9999 (e.g., OAS1_0012). For each of a
 subject’s imaging sessions, an ID has been assigned of the format OAS1_xxxx_MRy, where y represents
 an incrementing number to reflect the imaging visit number for the subject (e.g., OAS1_0012_MR1).
+
 For each session, a zip-compressed archive file is included and named with the session ID. When
 uncompressed, each session directory includes an XML file, a text (TXT) file, and three subdirectories:
 RAW, PROCESSED, and FSL_SEG.
+
 The XML file includes acquisition details and anatomic measures derived from the scan images. A full
 description of the OASIS XML format can be found at http://www.oasis-brains.org/schemas/.
+
 The TXT file includes the same information as the XML but is converted to text format for viewing.
+
 The RAW directory includes the individual scan images.
+
 The PROCESSED directory includes two additional subdirectories: SUBJ_111 and T88_111. SUBJ_111
 includes the averaged, co-registered image of the individual scan images in the native acquisition space in
 resampled to 1mm isotropic voxels. T88_111 includes the atlas-registered gain field-corrected image and a
 brain-masked version of that image resampled to 1mm isotropic voxels. It also includes a subdirectory
 called t4_files that includes the matrices describing the transformation into atlas space.
+
 The FSL_SEG directory includes the grey/white/CSF segmentation image generated from the masked
 atlas image.
 
