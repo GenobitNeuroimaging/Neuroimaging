@@ -25,7 +25,7 @@ format:
 \vspace{0.5cm}
 
 
-\Large \textbf{Etapa 1: Preprocesamiento de los datos} \par
+\Large \textbf{Image preprocesing} \par
 
 \vspace{4cm}
 
