@@ -4,7 +4,28 @@ Alzheimer'z disease (AD) is a neurodegenerative disease in elderly people, that 
 by the build up of two main proteins amyloid beta and tau protein that cause abnormal protein clumps called amyloid plaques and tangled fibers known as neurofibrillary tangles in specific areas of the brain, particularly the temporal lobe and neocortical regions (Dash et al., 2023).
 There are curently around 50 million people worldwide are living with Alzheimer’s, and this number is expected to rise to approximately 152 million by 2050 (Ferreira, C. A. et al., 2018).
 The progress of AD can be classified as three stages: (i) The asymptotic stage, (ii) Mild AD, and (iii) The Dementia stage. In the first stage, changes in the brain begin to occur without any behavioral symptoms. In the second stage, memory complaints may become noticeable to patients (Mahendran and PM, 2022). In the final dementia stage, they are severely impaired and unable to manage their daily lives.
-There is no known cure, but if diagnosed in an early asymptomatic stage it can be controled. Recent disease-modifying therapies targeting amyloid-beta plaques have shown modest slowing of cognitive decline in early stages. Lecanemab (Cohen et al., 2023) and donanemab (Courade et al., 2025) are two FDA-approved monoclonal antibodies that reduce amyloid plaque and slow down the progression by approximately 27–35% over 18 months in amyloid-positive patients with mild cognitive impairment or mild AD
+There is no known cure, but if diagnosed in an early asymptomatic stage it can be controled. Recent disease-modifying therapies targeting amyloid-beta plaques have shown modest slowing of cognitive decline in early stages. Lecanemab (Cohen et al., 2023) and donanemab (Courade et al., 2025) are two FDA-approved monoclonal antibodies that reduce amyloid plaque and slow down the progression by approximately 27–35% over 18 months in amyloid-positive patients with mild cognitive impairment or mild AD.
 
+# Oasis directory structure and file names
+
+The contents of the DVD and downloadable archive file are organized by imaging session. Data from each
+MRI session exists in its own directory labeled by the subject ID. The random subject ID uses the format
+OAS1_xxxx, where ‘xxxx’ represents a number from 00001 to 9999 (e.g., OAS1_0012). For each of a
+subject’s imaging sessions, an ID has been assigned of the format OAS1_xxxx_MRy, where y represents
+an incrementing number to reflect the imaging visit number for the subject (e.g., OAS1_0012_MR1).
+For each session, a zip-compressed archive file is included and named with the session ID. When
+uncompressed, each session directory includes an XML file, a text (TXT) file, and three subdirectories:
+RAW, PROCESSED, and FSL_SEG.
+The XML file includes acquisition details and anatomic measures derived from the scan images. A full
+description of the OASIS XML format can be found at http://www.oasis-brains.org/schemas/.
+The TXT file includes the same information as the XML but is converted to text format for viewing.
+The RAW directory includes the individual scan images.
+The PROCESSED directory includes two additional subdirectories: SUBJ_111 and T88_111. SUBJ_111
+includes the averaged, co-registered image of the individual scan images in the native acquisition space in
+resampled to 1mm isotropic voxels. T88_111 includes the atlas-registered gain field-corrected image and a
+brain-masked version of that image resampled to 1mm isotropic voxels. It also includes a subdirectory
+called t4_files that includes the matrices describing the transformation into atlas space.
+The FSL_SEG directory includes the grey/white/CSF segmentation image generated from the masked
+atlas image.
 
 
