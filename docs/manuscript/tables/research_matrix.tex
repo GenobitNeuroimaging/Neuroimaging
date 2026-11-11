@@ -1,0 +1,58 @@
+% research_matrix.tex — comparison of prior AD-classification studies (issue #5).
+% Included from sections/related_work.tex with \input{../tables/research_matrix}
+% (requires the `array` and `booktabs` packages, both loaded in preamble.tex).
+%
+% Rows were compiled from the performance tables of Nibila & Sivagami (2026),
+% so metrics are AS REPORTED BY THAT REVIEW and must be checked against each
+% primary paper before the numbers are quoted. `%` comments above each row
+% hold the DOI and verification notes; they are not typeset.
+\begin{table*}[t]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.15}
+  \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+  \caption{Summary of previous studies on Alzheimer's disease classification
+    from neuroimaging. CN: cognitively normal; MCI: mild cognitive impairment;
+    AD: Alzheimer's disease. Metrics are those reported by each study.}
+  \label{tab:research_matrix}
+  \begin{tabular}{L{2.2cm} L{2.4cm} L{1.5cm} L{2.0cm} L{3.9cm} L{3.7cm}}
+    \toprule
+    \textbf{Author (year)} & \textbf{Dataset} & \textbf{Modality} & \textbf{Task} &
+    \textbf{Architecture} & \textbf{Validation metrics} \\
+    \midrule
+    % doi: 10.1016/j.neucom.2018.11.111 | note: Unsupervised; dataset not named in review
+    Bi et al. (2020) & 1,075 subjects & MRI & AD vs CN & PCANet + K-means (unsupervised) & Acc 92.6\%; Prec 0.84; Rec 0.86 \\
+    % doi: 10.1016/j.asoc.2019.105857 | note: Dataset not named in review
+    Chitradevi \& Prabha (2020) & 200 subjects & MRI & AD vs CN & Grey Wolf Optimization (hippocampus sub-regions) + AlexNet & Acc 95\%; Prec 0.94; Rec 0.95 \\
+    % doi: 10.1016/j.neucom.2020.01.053 | note: Precision/recall exceed accuracy: inconsistent in review
+    Li et al. (2020) & ADNI (389 subjects) & 4D fMRI & AD vs CN & 3D CNN & Acc 88.12\%; Prec 0.92; Rec 0.93 \\
+    % doi: 10.1016/j.neuroimage.2019.116459 | note: Segmentation + classification pipeline
+    Liu et al. (2020) & ADNI (439 subjects) & MRI & CN vs MCI vs AD & Multi-model deep CNN + 3D DenseNet (hippocampus segmentation then classification) & Acc 76.2\%; Prec 0.78; Rec 0.77 \\
+    % doi: 10.1016/j.patcog.2021.107944
+    Chen \& Xia (2021) & ADNI (1,248 subjects) & MRI & CN vs MCI vs AD & Iterative sparse learning + deep learning & Acc 95.32\%; Prec 0.96; Rec 0.97 \\
+    % doi: 10.1016/j.compbiomed.2021.104537
+    Ebrahimi et al. (2021) & ADNI (450 subjects) & MRI & CN vs MCI vs AD & Temporal convolutional network (TCN) & Acc 91.78\%; Prec 0.87; Rec 0.90 \\
+    % doi: 10.1016/j.bspc.2020.102397
+    Hedayati et al. (2021) & ADNI (800 subjects) & MRI & CN vs MCI vs AD & Ensemble of convolutional autoencoders (feature extraction) & Acc 92.5\%; Prec 0.85; Rec 0.88 \\
+    % doi: 10.1016/j.irbm.2020.06.006 | note: Modality as reported by review; verify
+    Janghel \& Rathore (2021) & 2,729 images & fMRI, PET & AD vs CN & VGG16 + SVM & Acc 76\%; Prec 0.79; Rec 0.80 \\
+    % doi: 10.1016/j.compbiomed.2021.104828 | note: Dataset not named in review
+    Kaplan et al. (2021) & 263 subjects & MRI & CN vs MCI vs AD & LPQNet & Acc 99\%; Prec 0.93; Rec 0.94 \\
+    % doi: 10.1016/j.cmpb.2021.106032 | note: Review and paper title disagree on architecture; review's DOI was wrong
+    Liu et al. (2021) & OASIS (416 subjects) & sMRI & AD vs CN & Depthwise separable CNN & Acc 93\%; Prec 0.86; Rec 0.88 \\
+    % doi: 10.1016/j.bspc.2021.103455
+    Deepa \& Chokkalingam (2022) & ADNI (819 subjects) & MRI & CN vs MCI vs AD & VGG16 + Arithmetic Optimization Algorithm & Acc 97\%; Prec 0.99; Rec 0.98 \\
+    % doi: 10.1007/s12559-021-09946-2
+    Helaly et al. (2022) & ADNI (300 subjects) & MRI & CN vs MCI vs AD & CNN & Acc 98.47\%; Prec 0.95; Rec 0.96 \\
+    % doi: 10.1016/j.bspc.2022.103565 | note: Precision/recall exceed accuracy: inconsistent in review
+    Kong et al. (2022) & ADNI (740 subjects) & MRI + PET & AD vs CN & 3D CNN (multimodal) & Acc 86.52\%; Prec 0.94; Rec 0.95 \\
+    % doi: 10.1016/j.matpr.2021.04.415 | note: Image-level count; check for subject-level split
+    Kumar et al. (2022) & OASIS (5,000 images) & MRI & AD vs CN & AlexNet & Acc 97\%; Prec 0.93; Rec 0.92 \\
+    % doi: 10.1016/j.asoc.2021.108099
+    Sharma et al. (2022) & ADNI (400 subjects) & sMRI & CN vs MCI vs AD & FDN-ADNet: ResNet + fuzzy LS-TWSVM & Acc 97.29\%; Prec 0.98; Rec 0.98 \\
+    % doi: 10.3389/frai.2025.1558725 | note: Public Kaggle slices; task differs between review and title
+    Elmotelb et al. (2025) & Kaggle MRI (6,400 images) & MRI & AD vs CN; multi-class & ResNet152V2 + hyperparameter optimization & Acc 95\%; Prec 0.98; Rec 0.98 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
