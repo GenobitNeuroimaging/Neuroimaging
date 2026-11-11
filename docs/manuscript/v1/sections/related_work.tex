@@ -15,6 +15,8 @@ these approaches is provided in \cref{tab:research_matrix}.
 %   zhao2024vision        10.3389/fneur.2024.1490829
 %   mahmudjoy2025vitad    10.1016/j.brainres.2024.149302
 %   khosroshahi2025explainable  10.3390/diagnostics15050612
+%   helaly2022deep        10.1007/s12559-021-09946-2  (currently the invalid
+%                         key `deep`, a web-page import; re-export from Zotero)
 % ---------------------------------------------------------------------
 
 \subsection{Convolutional architectures and transformers}
@@ -54,8 +56,8 @@ subjects), and the lowest value belongs to the largest cohort, which suggests th
 small samples may inflate reported performance. More recent work replaces
 the standard SVM with margin-based variants and couples them to learned features:
 \textcite{sharma2022fdnadnet} feed ResNet features into a fuzzy least-squares twin SVM
-(FDN-ADNet) and report 97.29\% accuracy on 400 ADNI subjects for the
-three-class task.
+(FDN-ADNet) and report 97.15\%, 97.29\% and 95\% accuracy on ADNI for the
+binary CN vs.\ AD, CN vs.\ MCI and AD vs.\ MCI tasks, respectively.
 
 \subsection{Feature extraction}
 \label{sec:rw_features}
@@ -100,12 +102,25 @@ explanation of its predictions, which remains an open point of comparison.
 \label{sec:rw_caveats}
 
 Direct comparison across these studies is difficult. Cohort sizes range from a
-few hundred subjects to several thousand images, and several studies count images
-rather than subjects: for example, \textcite{sathishkumar2022alexnet} report 97\%
-accuracy for AlexNet on 5,000 OASIS images, and \textcite{elmotelb2025novel} use
-6,400 public slices. When slices from one subject can fall into both training and
-test sets, accuracy is overestimated, so a subject-level split is essential;
-\textcite{zhao2024vision} state explicitly that they use one. Tasks also differ (CN vs.\ AD,
-CN/MCI/AD, MCI vs.\ AD), as do the metrics reported, and
+few hundred subjects to over a hundred thousand images, and several studies count
+images rather than subjects: for example, \textcite{sathishkumar2022alexnet} report
+98.35\% accuracy for AlexNet on more than 100,000 OASIS images,
+\textcite{deepa2022optimization} classify 819 ADNI images, and
+\textcite{elmotelb2025novel} use 6,400 public slices. When slices from one subject
+can fall into both training and test sets, accuracy is overestimated, so a
+subject-level split is essential; \textcite{zhao2024vision} state explicitly that
+they use one. In \cref{tab:research_matrix}, only \textcite{ebrahimi2021deep} and
+\textcite{kong2022multimodal} separate data at the subject level (they use one scan
+per subject), whereas \textcite{janghel2021deep}, \textcite{liu2021alzheimers},
+\textcite{deepa2022optimization} and \textcite{helaly2022deep} split randomly over
+images, in some cases after augmentation, and most of the remaining studies do not
+report the level of the split at all.
+
+Tasks also differ (CN vs.\ AD, MCI vs.\ CN, CN/MCI/AD), and accuracies obtained
+on different tasks are not interchangeable: several studies report a binary result
+alongside a lower multi-class one, as \textcite{li2020detecting} do with 97.37\% for
+AD vs.\ CN and 89.47\% for the three-class task. The metrics reported also differ.
+\cref{tab:research_matrix} lists accuracy only, because precision and recall are
+not reported consistently across the primary studies, although
 \textcite{nibila2026artificial} stress that accuracy alone is insufficient and
 should be accompanied by precision, recall and related measures.
