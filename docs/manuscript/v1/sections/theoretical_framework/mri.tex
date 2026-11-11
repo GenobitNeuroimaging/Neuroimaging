@@ -1,0 +1,27 @@
+% Magnetic Resonance Imaging — new subsection between CNNs (#25) and Alzheimer's disease (#26).
+\subsection{Magnetic Resonance Imaging}
+\label{subsec:mri}
+
+\emph{Magnetic resonance imaging} (MRI) is a medical imaging technique that uses a strong magnetic field and radio waves to produce images of soft tissue without ionizing radiation. \emph{Structural MRI} is the type of MRI that shows anatomy, and T1-weighted images, one of its common contrasts, display gray matter, white matter and cerebrospinal fluid with different intensities, so that loss of tissue appears as shrinking brain structures and enlarged fluid spaces \parencite{frisoni2010clinical,nibila2026artificial}.
+
+An MRI scan is a 3D volume, a grid of \emph{voxels} (the 3D equivalent of pixels), each with an intensity value. A volume is usually inspected as 2D slices along one of three planes \parencite{nibila2026artificial}, listed in \cref{tab:mri_planes}.
+
+\input{../tables/mri_planes}
+
+Raw scans are usually preprocessed before analysis. Typical steps are noise reduction, registration to a standard template so that all scans share the same coordinate space, and skull stripping, the removal of the skull and other non-brain tissue \parencite{nibila2026artificial}.
+
+\subsubsection{Segmentation}
+\label{subsubsec:segmentation}
+
+\emph{Segmentation} is the task of assigning a class label to every pixel or voxel of an image, in contrast to classification, which assigns a single label to the whole image. In brain MRI it delineates structures such as the hippocampus, or tissues such as gray matter, so that their volume and shape can be measured, which is how atrophy is quantified \parencite{frisoni2010clinical}.
+
+CNNs are adapted to segmentation through the \emph{fully convolutional network} (FCN), a CNN without fully connected layers whose output is a map with one class score per voxel, so it accepts inputs of any size \parencite{prince2023understanding}. Because pooling shrinks the feature maps, an FCN is typically organized as an \emph{encoder-decoder}. The encoder is the sequence of convolution and pooling layers that compresses the input into compact features. The decoder restores the original resolution using \emph{transposed convolutions}, which enlarge a map instead of shrinking it, or interpolation.
+
+Pooling also discards fine spatial detail, so a decoder working only from the compressed features produces blurry boundaries. U-Net addresses this with \emph{skip connections}, shortcuts like the one in ResNet that here concatenate each encoder feature map with the decoder map of the same resolution, so that the decoder combines what is present with where it is \parencite{ronneberger2015unet}. The same encoder-decoder design extends to 3D kernels that operate directly on volumes \parencite{milletari2016vnet}.
+
+Segmentation networks are trained with a loss function that compares the predicted probability $p$ of each voxel with its manual label $g$. The cross-entropy averages the error over all voxels, but when the structure of interest occupies a small part of the volume, as the hippocampus does, the background dominates it. The Dice loss avoids this by measuring the overlap between the prediction and the manual segmentation \parencite{milletari2016vnet}:
+\begin{equation}
+  L_{\mathrm{Dice}} = 1 - \frac{2\sum_{i} p_i\, g_i}{\sum_{i} p_i + \sum_{i} g_i}
+  \label{eq:dice}
+\end{equation}
+where $i$ runs over all voxels. For binary masks the same expression gives the Dice similarity coefficient, the standard metric of segmentation quality, where 1 means perfect overlap and 0 means none.
