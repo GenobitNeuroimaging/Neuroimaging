@@ -2,4 +2,99 @@
 \section{Related Work}
 \label{sec:related_work}
 
-% TODO(#5): write this section.
+Several previously published studies have informed the development of the proposed
+methodology. Collectively, these works represent the current state of the art in
+classification techniques for Alzheimer's disease (AD). A comparative overview of
+these approaches is provided in \cref{tab:research_matrix}.
+
+\input{../tables/research_matrix.tex}
+
+% ---------------------------------------------------------------------
+% CITATION KEYS: the papers below are not yet in references.bib. Keys are
+% PREDICTED from the Better BibTeX pattern (auth.lower + year +
+% shorttitle(1,0)); after importing the DOIs in Zotero, replace any key
+% that differs. DOI / key map:
+%   liu2020multi        10.1016/j.neuroimage.2019.116459
+%   liu2021alzheimers   10.1016/j.cmpb.2021.106032
+%   kumar2022alexnet    10.1016/j.matpr.2021.04.415
+%   hedayati2021deep    10.1016/j.bspc.2020.102397
+%   kong2022multi       10.1016/j.bspc.2022.103565
+%   chen2021iterative   10.1016/j.patcog.2021.107944
+%   chitradevi2020analysis 10.1016/j.asoc.2019.105857
+%   bi2020computer      10.1016/j.neucom.2018.11.111
+%   ebrahimi2021deep    10.1016/j.compbiomed.2021.104537
+%   kaplan2021feed      10.1016/j.compbiomed.2021.104828
+%   sharma2022fdn       10.1016/j.asoc.2021.108099
+%   elmotelb2025novel   10.3389/frai.2025.1558725
+%   zhao2024vision      10.3389/fneur.2024.1490829   (read in full text)
+%   mahmudjoy2025vitad  10.1016/j.brainres.2024.149302 (abstract only)
+% ---------------------------------------------------------------------
+
+\subsection{Convolutional architectures and transformers}
+\label{sec:rw_architectures}
+
+Convolutional neural networks (CNNs) dominate the neuroimaging studies in
+\cref{tab:research_matrix}, but the architectures have moved well beyond plain
+2D classifiers. \textcite{liu2020multi} chain a multi-model CNN for hippocampus
+segmentation with a 3D DenseNet classifier, while \textcite{kong2022multi} apply
+3D convolutions to fused MRI and PET volumes, and \textcite{ebrahimi2021deep}
+treat the slices of a scan as a sequence processed by a temporal convolutional
+network. Lighter and deeper backbones are also explored, from depthwise
+separable convolutions \parencite{liu2021alzheimers} to a ResNet152V2 tuned by
+hyperparameter optimization \parencite{elmotelb2025novel}.
+
+Transformers appear only recently in this literature. \textcite{zhao2024vision}
+argue that a pure 3D vision transformer is too costly for volumetric MRI and
+instead redesign a 3D ResNet-50 with transformer-inspired choices: a
+non-overlapping patchify stem, a Swin-like 1:1:3:1 block ratio, depthwise
+separable convolutions, GELU activations and layer normalization. Using 818
+ADNI subjects and a subject-level split, they report 92.14\% accuracy on the
+three-class CN/MCI/AD task, although on the binary CN vs.\ AD task their
+94.07\% remains below a previously published 98.20\%. At the other extreme, ViTAD, a
+modified vision transformer, reports 99.98\%
+accuracy on five classes using 1,296 ADNI images \parencite{mahmudjoy2025vitad}.
+Results this close to perfect on a small, single-dataset image collection call
+for scrutiny of how images were split across training and test sets, a point we
+return to in \cref{sec:rw_caveats}.
+
+\subsection{Support vector machines and their variants}
+\label{sec:rw_svm}
+
+Classical machine learning remains competitive when it is fed good features.
+The review by \textcite{nibila2026artificial} collects SVM-based studies whose
+reported accuracy spans from 69.5\% (ADNI, 1,715 subjects) to 95\% (150
+subjects), and the lowest value belongs to the largest cohort, which suggests that
+small samples may inflate reported performance. More recent work replaces
+the standard SVM with margin-based variants and couples them to learned features:
+\textcite{sharma2022fdn} feed ResNet features into a fuzzy least-squares twin SVM
+(FDN-ADNet) and report 97.29\% accuracy on 400 ADNI subjects for the
+three-class task.
+
+\subsection{Feature extraction}
+\label{sec:rw_features}
+
+A second line of work concentrates on \emph{what} is given to the classifier.
+Some studies restrict the input to regions known to be affected early in AD:
+\textcite{chitradevi2020analysis} optimize the selection of hippocampal
+sub-regions before an AlexNet classifier, and \textcite{liu2020multi}
+segment the hippocampus before classifying it. Others learn the representation
+without labels, as in the ensemble of convolutional autoencoders of
+\textcite{hedayati2021deep} or the unsupervised PCANet plus $k$-means pipeline of
+\textcite{bi2020computer}. A third group combines sparse learning with deep
+networks \parencite{chen2021iterative} or rely on a feed-forward network built around local phase quantization
+features, as in the LPQNet of \textcite{kaplan2021feed}. Unlike end-to-end CNNs,
+these pipelines make the feature-extraction step an explicit design decision.
+
+\subsection{Reporting practices and caveats}
+\label{sec:rw_caveats}
+
+Direct comparison across these studies is difficult. Cohort sizes range from a
+few hundred subjects to several thousand images, and several studies count images
+rather than subjects: for example, \textcite{kumar2022alexnet} report 97\%
+accuracy for AlexNet on 5,000 OASIS images, and \textcite{elmotelb2025novel} use
+6,400 public slices. When slices from one subject can fall into both training and
+test sets, accuracy is overestimated, so a subject-level split is essential;
+\textcite{zhao2024vision} state explicitly that they use one. Tasks also differ (CN vs.\ AD,
+CN/MCI/AD, MCI vs.\ AD), as do the metrics reported, and
+\textcite{nibila2026artificial} stress that accuracy alone is insufficient and
+should be accompanied by precision, recall and related measures.
