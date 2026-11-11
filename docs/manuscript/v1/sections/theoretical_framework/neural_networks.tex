@@ -2,4 +2,35 @@
 \subsection{Neural Networks}
 \label{subsec:neural_networks}
 
-% TODO(#23): write this subsection.
+An \emph{artificial neural network} is a model that learns a mapping from an input $\mathbf{x}$ to an output $\hat{\mathbf{y}}$ by composing many simple processing units, called \emph{neurons}, whose behavior is controlled by numerical \emph{parameters} adjusted from data. The idea goes back to the \emph{perceptron}, one of the first neural networks trained with supervised learning, introduced in the late 1950s \parencite{schmidhuber2015deep}. Modern networks connect many of these units in successive layers and train them with more general methods \parencite{alzubaidi2021review}.
+
+A neuron computes a weighted sum of its inputs, adds a \emph{bias}, and passes the result through a non-linear \emph{activation function} $\sigma$:
+\begin{equation}
+  a = \sigma\!\left( \sum_{i=1}^{n} w_i\, x_i + b \right)
+  \label{eq:neuron}
+\end{equation}
+where $x_i$ are the inputs, $w_i$ the \emph{weights}, which set how much each input contributes, and $b$ the bias, which shifts the point at which the neuron responds. The activation function is what makes the mapping from input to output non-linear, which lets the network represent complex relations \parencite{alzubaidi2021review}. The most common activation functions are summarized in \cref{tab:activation_functions} \parencite{yamashita2018convolutional,alzubaidi2021review}.
+
+\input{../tables/activation_functions}
+
+Neurons are organized in \emph{layers}. The \emph{input layer} receives the data, one or more \emph{hidden layers} transform it, and the \emph{output layer} produces the prediction. In a \emph{fully connected layer} every neuron receives all the outputs of the previous layer, so the computation of a whole layer $l$ can be written in matrix form as
+\begin{equation}
+  \mathbf{h}^{(l)} = \sigma\!\left( \mathbf{W}^{(l)}\, \mathbf{h}^{(l-1)} + \mathbf{b}^{(l)} \right)
+  \label{eq:layer}
+\end{equation}
+where $\mathbf{h}^{(0)} = \mathbf{x}$, $\mathbf{W}^{(l)}$ is the matrix of weights and $\mathbf{b}^{(l)}$ the vector of biases. A network built only from such layers, in which information flows in one direction from input to output, is called a \emph{feedforward network} or \emph{multilayer perceptron} (MLP) \parencite{alzubaidi2021review}. All weights and biases together form the parameters $\theta$ of the model.
+
+Finding the values of $\theta$ is the goal of \emph{training}. A \emph{loss function} $L(\theta)$ measures how far the predictions are from the true labels over the training examples. In classification, the output layer usually applies the softmax function, which turns the outputs into probabilities $\hat{y}_k$ for each of the $K$ classes, and the loss is the \emph{cross-entropy}:
+\begin{equation}
+  L_{\mathrm{CE}} = - \sum_{k=1}^{K} y_k \log \hat{y}_k
+  \label{eq:cross_entropy}
+\end{equation}
+where $y_k$ is 1 for the true class and 0 otherwise, so the loss is low when the network assigns a high probability to the correct class \parencite{yamashita2018convolutional}.
+
+The loss is minimized by \emph{gradient descent}, which repeatedly moves the parameters a small step in the direction that reduces it:
+\begin{equation}
+  \theta \leftarrow \theta - \eta\, \nabla_{\theta} L(\theta)
+  \label{eq:gradient_descent}
+\end{equation}
+where $\eta$, the \emph{learning rate}, sets the size of the step. In practice the gradient is estimated on a small random subset of the training data, a \emph{mini-batch}, which is known as \emph{stochastic gradient descent} (SGD), and one pass over the whole training set is called an \emph{epoch} \parencite{yamashita2018convolutional,alzubaidi2021review}. The gradient with respect to every parameter is obtained with \emph{backpropagation}, which applies the chain rule from the output layer back to the input, passing the derivatives of each layer to the previous one so that all gradients are computed in a single backward pass \parencite{schmidhuber2015deep}. Popularized for neural networks in the 1980s, it is still the central learning algorithm of modern networks \parencite{schmidhuber2015deep}.
+
