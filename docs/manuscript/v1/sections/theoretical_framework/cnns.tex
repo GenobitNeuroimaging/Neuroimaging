@@ -2,4 +2,25 @@
 \subsection{Convolutional Neural Networks}
 \label{subsec:cnns}
 
-% TODO(#25): write this subsection.
+A \emph{convolutional neural network} (CNN) is a neural network that uses convolutions in at least some of its layers. A \emph{convolution} is an operation in which a small grid of weights, called a \emph{kernel} or \emph{filter}, is moved across the input and, at each position, multiplied element by element with the values it covers and summed. A \emph{convolutional layer} is a layer that applies one or more kernels to its input; each kernel is small, typically $3 \times 3$ in 2D or $3 \times 3 \times 3$ in 3D, and its weights are learned during training. These characteristics make CNNs well suited to data with a grid structure, such as images \parencite{prince2023understanding}.
+
+For a 2D image $X$ and a kernel $K$, the output of a convolutional layer at position $(i, j)$ is given by \cref{eq:convolution}, where $b$ is a bias term and $\sigma$ is a non-linear activation function, for example ReLU, which replaces negative values with zero:
+\begin{equation}
+  F(i,j) = \sigma\!\left( \sum_{m}\sum_{n} K(m,n)\, X(i+m,\, j+n) + b \right)
+  \label{eq:convolution}
+\end{equation}
+The output obtained by applying one kernel to the whole input is called a \emph{feature map}, and it shows where in the input the pattern encoded by that kernel appears. A layer applies many kernels in parallel, so its output is a stack of feature maps that becomes the input of the next layer.
+
+To reduce the size of the feature maps, convolutional layers are usually followed by \emph{pooling}, an operation that replaces each small neighborhood of a map with a single value, either its maximum (max pooling) or its average (average pooling), which also makes the representation less sensitive to small shifts of a pattern. Both the kernel and the pooling window are controlled by two parameters:
+\begin{itemize}
+  \item \textbf{Stride:} the number of positions the window advances at each step; a stride larger than 1 also shrinks the output.
+  \item \textbf{Padding:} values, usually zeros, added around the border of the input so that the output keeps the same size as the input.
+\end{itemize}
+
+Because each layer takes the output of the previous one as its input, a unit deep in the network depends on a growing region of the original input, called its \emph{receptive field}. As a result, early layers detect simple patterns such as edges and textures, and later layers detect larger structures built from them.
+
+The same operations extend to three dimensions. In a 2D CNN the kernel moves along the height and width of an image, whereas in a 3D CNN it also moves along the depth, so it processes a whole volume and preserves the relation between neighboring slices, at the cost of many more parameters and memory.
+
+Beyond these basic operations, CNNs differ in how many layers they stack and how those layers are connected. Three architectures became standard references \parencite{prince2023understanding}, summarized in \cref{tab:cnn_architectures}.
+
+\input{../tables/cnn_architectures}

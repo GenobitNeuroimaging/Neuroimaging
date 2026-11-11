@@ -1,0 +1,16 @@
+% Reference CNN architectures — used in sections/theoretical_framework/cnns.tex.
+\begin{table}[t]
+  \centering
+  \caption{Reference CNN architectures.}
+  \label{tab:cnn_architectures}
+  \small
+  \begin{tabular}{@{}p{0.2\columnwidth}p{0.22\columnwidth}p{0.5\columnwidth}@{}}
+    \toprule
+    Architecture & Depth & Key idea \\
+    \midrule
+    VGG      & 16 or 19 layers  & Stacks of small $3 \times 3$ kernels; simple and deep. \\
+    ResNet   & 18 to 152 layers & Skip connections, shortcuts that add a block's input to its output, make very deep networks trainable. \\
+    DenseNet & 121 to 201 layers & Each layer receives the feature maps of all previous layers, which reuses features and needs fewer parameters. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
