@@ -43,7 +43,26 @@
 \renewcommand*{\bibfont}{\small}
 
 % --- Cross-references (hyperref, then cleveref, always last) ---------
-\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+% Dark, desaturated tones: readable on screen and still distinguishable
+% from body text when printed in grayscale.
+\definecolor{linkinternal}{HTML}{1F3A93}  % sections, tables, figures, equations
+\definecolor{linkcite}{HTML}{1E6B3A}      % citations
+\definecolor{linkurl}{HTML}{8A2D6B}       % URLs and DOIs
+\usepackage[
+  colorlinks=true,
+  linkcolor=linkinternal,
+  citecolor=linkcite,
+  urlcolor=linkurl,
+  filecolor=linkurl,
+  breaklinks=true,        % let long URLs and DOIs wrap in narrow columns
+  bookmarksnumbered=true,
+  unicode=true,
+  pdfusetitle,            % PDF title and author from \title and \author
+  pdfdisplaydoctitle=true,
+  pdfstartview=FitH,
+  pdflang=en-US
+]{hyperref}
 \usepackage[capitalise, noabbrev]{cleveref}
 
 % --- Macros ----------------------------------------------------------
