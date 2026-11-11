@@ -19,9 +19,11 @@ CNNs are adapted to segmentation through the \emph{fully convolutional network} 
 
 Pooling also discards fine spatial detail, so a decoder working only from the compressed features produces blurry boundaries. U-Net addresses this with \emph{skip connections}, shortcuts like the one in ResNet that here concatenate each encoder feature map with the decoder map of the same resolution, so that the decoder combines what is present with where it is \parencite{ronneberger2015unet}. The same encoder-decoder design extends to 3D kernels that operate directly on volumes \parencite{milletari2016vnet}.
 
-Segmentation networks are trained with a loss function that compares the predicted probability $p$ of each voxel with its manual label $g$. The cross-entropy averages the error over all voxels, but when the structure of interest occupies a small part of the volume, as the hippocampus does, the background dominates it. The Dice loss avoids this by measuring the overlap between the prediction and the manual segmentation \parencite{milletari2016vnet}:
+Segmentation networks are trained with a loss function that compares the predicted probability $p$ of each voxel with its manual label $g$. The cross-entropy averages the error over all voxels, but when the structure of interest occupies a small part of the volume, as the hippocampus does, the background dominates it. The Dice loss avoids this by building on the Dice similarity coefficient $D$, which measures the overlap between the prediction and the manual segmentation \parencite{milletari2016vnet}:
 \begin{equation}
-  L_{\mathrm{Dice}} = 1 - \frac{2\sum_{i} p_i\, g_i}{\sum_{i} p_i + \sum_{i} g_i}
+  D = \frac{2\sum_{i} p_i\, g_i}{\sum_{i} p_i + \sum_{i} g_i},
+  \qquad
+  L_{\mathrm{Dice}} = 1 - D
   \label{eq:dice}
 \end{equation}
-where $i$ runs over all voxels. For binary masks the same expression gives the Dice similarity coefficient, the standard metric of segmentation quality, where 1 means perfect overlap and 0 means none.
+where $i$ runs over all voxels. For binary masks, $D$ is the standard metric of segmentation quality: $D = 1$ means perfect overlap and $D = 0$ means no overlap, so minimizing the loss $L_{\mathrm{Dice}}$ maximizes the overlap.
