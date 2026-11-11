@@ -1,0 +1,17 @@
+% Regularization techniques — used in sections/theoretical_framework/deep_learning.tex.
+\begin{table}[t]
+  \centering
+  \caption{Common regularization techniques.}
+  \label{tab:regularization}
+  \small
+  \begin{tabular}{@{}p{0.32\columnwidth}p{0.6\columnwidth}@{}}
+    \toprule
+    Technique & Key idea \\
+    \midrule
+    Weight decay      & Adds a penalty on the size of the weights to the loss. \\
+    Dropout           & Randomly sets the output of a fraction of the neurons to zero at each training step. \\
+    Data augmentation & Enlarges the training set with modified copies of the images, such as small rotations, shifts or flips. \\
+    Batch normalization & Normalizes the inputs of each layer, which improves the flow of gradients and allows higher learning rates. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
