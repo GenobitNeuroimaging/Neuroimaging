@@ -1,0 +1,17 @@
+% Common activation functions — used in sections/theoretical_framework/neural_networks.tex.
+\begin{table}[t]
+  \centering
+  \caption{Common activation functions.}
+  \label{tab:activation_functions}
+  \small
+  \begin{tabular}{@{}p{0.18\columnwidth}p{0.34\columnwidth}p{0.38\columnwidth}@{}}
+    \toprule
+    Function & Definition & Typical use \\
+    \midrule
+    Sigmoid & $\sigma(z) = \dfrac{1}{1 + e^{-z}}$ & Output of binary classifiers; maps any value to $(0, 1)$. \\
+    Tanh    & $\tanh(z) = \dfrac{e^{z} - e^{-z}}{e^{z} + e^{-z}}$ & Common in earlier networks; maps any value to $(-1, 1)$. \\
+    ReLU    & $\max(0, z)$ & Most common in hidden layers; reduces the vanishing gradient problem. \\
+    Softmax & $\dfrac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}$ & Output of multi-class classifiers; values sum to 1. \\
+    \bottomrule
+  \end{tabular}
+\end{table}

@@ -1,0 +1,140 @@
+% research_matrix.tex — comparison of prior AD-classification studies (issue #5).
+% Included from sections/related_work.tex with \input{../tables/research_matrix}
+% (requires the `array` and `booktabs` packages, both loaded in preamble.tex).
+%
+% Rows were first compiled from Nibila & Sivagami (2026) and then audited
+% against the primary papers (PR #64 review). Layout rules:
+%   * one row per classification task; where a paper reports several models
+%     for the same task, the best result of the authors' proposed model is shown;
+%   * only accuracy is tabulated (precision/recall are not reported
+%     consistently in the primary papers and the review's values could not be
+%     traced to them);
+%   * dataset sizes count images, not subjects, when the paper does;
+%   * continuation rows of the same paper leave repeated cells empty;
+%   * Split: `Image-level`/`Subject-level` as stated or implied (one scan per subject);
+%     `None` = unsupervised, no train/test split. Details (CV folds, ratios) are in the
+%     per-paper comments below;
+%   * `n.r.` = not reported in the paper; `n.v.` = not verified (full text
+%     unavailable, only the abstract was read).
+% `%` comments above each paper hold the DOI and verification notes; they are
+% not typeset.
+\begin{table*}[t]
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{3pt}
+  \renewcommand{\arraystretch}{1.0}
+  \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+  \caption{Summary of previous studies on Alzheimer's disease classification
+    from neuroimaging. CN: cognitively normal; MCI: mild cognitive impairment;
+    AD: Alzheimer's disease; EMCI/LMCI: early/late MCI. One row per task; Acc.\
+    is the accuracy reported by the study. Split: level at which training and
+    test data were separated. n.r.: not reported; n.v.: not verified against the
+    full text.}
+  \label{tab:research_matrix}
+  \begin{tabular}{L{2.0cm} L{3.1cm} L{1.4cm} L{2.3cm} L{3.7cm} L{0.9cm} L{2.0cm}}
+    \toprule
+    \textbf{Author (year)} & \textbf{Dataset} & \textbf{Modality} & \textbf{Task} &
+    \textbf{Architecture} & \textbf{Acc.\ (\%)} & \textbf{Split} \\
+    \midrule
+    % doi: 10.1016/j.neucom.2018.11.111 | ADNI-1 1.5T screening scan, 1,075 subjects (243 AD, 307 NC, 525 MCI).
+    % Accuracies are for three orthogonal panels (TOP). The review paired 92.6 (MCI vs NC) with AD vs CN.
+    % Precision/recall are not reported in the paper. Unsupervised: no train/test split.
+    Bi et al. (2020) & ADNI-1 (1,075 subjects) & MRI & AD vs CN & PCANet + $k$-means (unsupervised) & 89.15 & None \\
+     & & & MCI vs CN & & 92.6 & \\
+     & & & AD vs MCI & & 97.01 & \\
+     & & & CN vs MCI vs AD & & 91.25 & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.asoc.2019.105857 | Private data, Chettinad Health City (Chennai), 1.5T T2-FLAIR, 100 NC + 100 AD,
+    % 200 images in total (Table 1 and Sec. 3.2). Acc 95 / sens 95 / spec 94 for the hippocampus (HC) with GWO.
+    % The paper does not describe a train/test split.
+    Chitradevi \& Prabha (2020) & Private (200 images, 200 subjects) & MRI (T2-FLAIR) & AD vs CN & Grey Wolf Optimization (hippocampus sub-regions) + AlexNet & 95 & n.r. \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.neucom.2020.01.053 | ADNI 3T Philips resting-state fMRI, 389 subjects (116 AD, 99 MCI, 174 NC).
+    % Table 2 of the paper. The review paired 88.12 (MCI/NC) with AD vs CN; its "precision/recall" are the AUCs of Table 3.
+    % 70/10/20 split with five-fold cross-validation; subject-level separation not stated.
+    Li et al. (2020) & ADNI (389 subjects) & 4D fMRI & AD vs CN & 3D CNN + LSTM (C3d-LSTM) & 97.37 & n.r. \\
+     & & & MCI vs CN & & 88.12 & \\
+     & & & AD vs MCI & & 92.11 & \\
+     & & & CN vs MCI vs AD & & 89.47 & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.neuroimage.2019.116459 | ADNI baseline T1, 97 AD + 233 MCI + 119 NC = 449 subjects (abstract).
+    % The review listed 439 subjects and 76.2 as a three-class result. AUCs are 92.5 (AD vs NC) and 77.5 (MCI vs NC).
+    % Split: n.v. (abstract only).
+    Liu et al. (2020) & ADNI (449 subjects) & MRI & AD vs CN & Multi-model deep CNN + 3D DenseNet (hippocampus segmentation then classification) & 88.9 & n.v. \\
+     & & & MCI vs CN & & 76.2 & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.patcog.2021.107944 | Only the abstract was read: it describes AD-CN classification and MCI-to-AD
+    % prediction, not a three-class task. The review's 1,248 subjects and 95.32 could not be confirmed.
+    Chen \& Xia (2021) & ADNI (n.v.) & MRI & AD vs CN & Iterative sparse learning + deep learning (ISDL) & n.v. & n.v. \\
+     & & & MCI-to-AD conversion & & n.v. & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.compbiomed.2021.104537 | ADNI, 225 AD + 225 NC subjects, one scan each (450 scans split 300/50/100).
+    % Binary task, not three-class. Reports sens 91.56 and spec 92; precision/recall are not reported.
+    Ebrahimi et al. (2021) & ADNI (450 subjects) & MRI & AD vs CN & ResNet-18 features + temporal convolutional network (TCN) & 91.78 & Subject-level \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.bspc.2020.102397 | Abstract only: AD/NC 95, AD/MCI 90, MCI/NC 92.5. The review gave 92.5 as a three-class result.
+    % The review's 800 subjects could not be confirmed.
+    Hedayati et al. (2021) & ADNI (n.v.) & MRI & AD vs CN & Ensemble of convolutional autoencoders (feature extraction) + CNN & 95 & n.v. \\
+     & & & AD vs MCI & & 90 & \\
+     & & & MCI vs CN & & 92.5 & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.irbm.2020.06.006 | Table 3.1, VGG16 + SVM, 10-fold CV. fMRI: 3,692 images (1,917 AD / 1,775 NL; the
+    % paper also states the fMRI set has 54 images/volumes). PET: 2,675 images (900 AD / 1,775 normal).
+    % Abstract figures 99.95 / 73.46 are averages over four classifiers. The review's 76 is PET only.
+    % The folds are formed over 2D images, so slices of one subject can appear in train and test.
+    Janghel \& Rathore (2021) & ADNI (3,692 images) & fMRI & AD vs CN & VGG16 + SVM & 100 & Image-level \\
+     & ADNI (2,675 images) & PET & AD vs CN & & 76.32 & Image-level \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.compbiomed.2021.104828 | Own dataset of 1,070 subjects, two classes (healthy, AD): 99.68.
+    % Kaggle AD set, four classes: 99.62. Also tested on Harvard Brain Atlas (100) and Kaggle two-class (99.64), omitted here.
+    % The review's 263 subjects and three-class task could not be found. Split: n.v.
+    Kaplan et al. (2021) & Private (1,070 subjects) & MRI & AD vs CN & LPQNet + neighborhood component analysis + classifier & 99.68 & n.v. \\
+     & Kaggle & MRI & 4 dementia stages & & 99.62 & n.v. \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.cmpb.2021.106032 | OASIS, 416 subjects resampled to 266 HC / 136 MCI / 90 AD images, then augmented
+    % to 532 / 408 / 450; random five-fold CV on images. Tables 3 and 5. The review gave 93 as AD vs CN with the depthwise
+    % separable CNN; in the paper 93.02 is GoogLeNet transfer learning on three classes (AlexNet: 91.40; DSC from scratch: 77.79).
+    % There is no AD vs CN experiment. The review's DOI was wrong; this one is the correct paper.
+    Liu et al. (2021) & OASIS (416 subjects; 1,390 augmented images) & MRI & CN vs MCI & CNN from scratch & 84.65 & Image-level \\
+     & & & MCI vs AD & & 72.96 & \\
+     & & & CN vs MCI vs AD & GoogLeNet (transfer learning) & 93.02 & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.bspc.2021.103455 | ADNI, 819 images (229 normal, 398 mild dementia, 192 late dementia), 70/30 split.
+    % The review counted 819 subjects and gave P 0.99 / R 0.98; the paper reports P 96.90 / R 95.82 (accuracy 97).
+    Deepa \& Chokkalingam (2022) & ADNI (819 images) & MRI & Normal vs mild vs late dementia & VGG16 + Arithmetic Optimization Algorithm & 97 & Image-level \\
+    \addlinespace[2pt]
+    % doi: 10.1007/s12559-021-09946-2 | ADNI, 300 subjects (75 each AD/EMCI/LMCI/NC), 48,000 augmented images shuffled
+    % and split 80/10/10 at random. The review's 98.47 is the 3D-M2IC EMCI vs NC result, not three-class.
+    % Four-class results: 2D 93.6, 3D 95.17, fine-tuned VGG19 97. AD vs NC: 2D 97.11, 3D 97.36.
+    Helaly et al. (2022) & ADNI (300 subjects; 48,000 augmented images) & 3D MRI & AD vs CN & 3D CNN (3D-M$^2$IC) & 97.36 & Image-level \\
+     & & 2D MRI & AD vs EMCI vs LMCI vs CN & VGG19 (fine-tuned) & 97 & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.bspc.2022.103565 | ADNI, 370 subjects (111 AD, 129 MCI, 130 NC), one MRI and one FDG-PET each
+    % (740 images in total), 10-fold CV. Tables 2--5. The review listed 740 subjects and gave 86.52 (MCI vs NC) as AD vs CN.
+    % Sens/spec are reported (e.g. AD:NC 91.43 / 95.42); precision/recall are not.
+    Kong et al. (2022) & ADNI (370 subjects; 740 images) & MRI + PET & AD vs CN & 3D CNN on fused MRI--PET images & 93.21 & Subject-level \\
+     & & & MCI vs CN & & 86.52 & \\
+     & & & AD vs MCI & & 85.63 & \\
+     & & & CN vs MCI vs AD & & 87.67 & \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.matpr.2021.04.415 | Only the abstract was read: OASIS, ``more than 1 lakh'' (>100,000) MRI images,
+    % 98.35 accuracy, classes not stated. The review's 5,000 images, 97 and AD vs CN conflict with it. Image-level counts:
+    % check for a subject-level split.
+    Kumar et al. (2022) & OASIS ($>$100,000 images) & MRI & n.v. & AlexNet & 98.35 & n.v. \\
+    \addlinespace[2pt]
+    % doi: 10.1016/j.asoc.2021.108099 | Accuracies from the authors' abstract / institutional record:
+    % CN vs AD 97.15, CN vs MCI 97.29, AD vs MCI 95 (binary tasks). The review gave 97.29 as three-class.
+    % Dataset size and split could not be confirmed (the review's 400 subjects is unverified; the model works on
+    % sagittal slices, so the unit may be images).
+    Sharma et al. (2022) & ADNI (n.v.) & sMRI (sagittal slices) & CN vs AD & FDN-ADNet: ResNet + fuzzy LS-TWSVM & 97.15 & n.v. \\
+     & & & CN vs MCI & & 97.29 & \\
+     & & & AD vs MCI & & 95 & \\
+    \addlinespace[2pt]
+    % doi: 10.3389/frai.2025.1558725 | Kaggle datasets, four classes only (non-, very mild, mild, moderate demented);
+    % no binary AD vs CN experiment. OrDS: 6,400 images, 95.21 (SGD). AuDS: 34,003 augmented images, 98.26 (SGD).
+    % The paper does not say whether the split is subject-level and describes inconsistent ratios (70/30 and 70/20/10).
+    Elmotelb et al. (2025) & Kaggle (6,400 images) & MRI & 4 dementia stages & ResNet152V2 + hyperparameter optimization & 95.21 & n.r. \\
+     & Kaggle, augmented (34,003 images) & MRI & 4 dementia stages & & 98.26 & n.r. \\
+    \bottomrule
+  \end{tabular}
+\end{table*}

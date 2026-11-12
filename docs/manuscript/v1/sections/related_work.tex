@@ -2,4 +2,115 @@
 \section{Related Work}
 \label{sec:related_work}
 
-% TODO(#5): write this section.
+Several previously published studies have informed the development of the proposed
+methodology. Collectively, these works represent the current state of the art in
+classification techniques for Alzheimer's disease (AD). A comparative overview of
+these approaches is provided in \cref{tab:research_matrix}.
+
+\input{../tables/research_matrix.tex}
+
+\subsection{Convolutional architectures and transformers}
+\label{sec:rw_architectures}
+
+Convolutional neural networks (CNNs) dominate the neuroimaging studies in
+\cref{tab:research_matrix}, but the architectures have moved well beyond plain
+2D classifiers. \textcite{liu2020multimodel} chain a multi-model CNN for hippocampus
+segmentation with a 3D DenseNet classifier, while \textcite{kong2022multimodal} apply
+3D convolutions to fused MRI and PET volumes, and \textcite{ebrahimi2021deep}
+treat the slices of a scan as a sequence processed by a temporal convolutional
+network. Lighter and deeper backbones are also explored, from depthwise
+separable convolutions \parencite{liu2021alzheimers} to a ResNet152V2 tuned by
+hyperparameter optimization \parencite{elmotelb2025novel}.
+
+Transformers appear only recently in this literature. \textcite{zhao2024vision}
+argue that a pure 3D vision transformer is too costly for volumetric MRI and
+instead redesign a 3D ResNet-50 with transformer-inspired choices: a
+non-overlapping patchify stem, a Swin-like 1:1:3:1 block ratio, depthwise
+separable convolutions, GELU activations and layer normalization. Using 818
+ADNI subjects and a subject-level split, they report 92.14\% accuracy on the
+three-class CN/MCI/AD task, although on the binary CN vs.\ AD task their
+94.07\% remains below a previously published 98.20\%. At the other extreme, ViTAD, a
+modified vision transformer, reports 99.98\%
+accuracy on five classes using 1,296 ADNI images \parencite{mahmudjoy2025vitad}.
+Results this close to perfect on a small, single-dataset image collection call
+for scrutiny of how images were split across training and test sets, a point we
+return to in \cref{sec:rw_caveats}.
+
+\subsection{Support vector machines and their variants}
+\label{sec:rw_svm}
+
+Classical machine learning remains competitive when it is fed good features.
+The review by \textcite{nibila2026artificial} collects SVM-based studies whose
+reported accuracy spans from 69.5\% (ADNI, 1,715 subjects) to 95\% (150
+subjects), and the lowest value belongs to the largest cohort, which suggests that
+small samples may inflate reported performance. More recent work replaces
+the standard SVM with margin-based variants and couples them to learned features:
+\textcite{sharma2022fdnadnet} feed ResNet features into a fuzzy least-squares twin SVM
+(FDN-ADNet) and report 97.15\%, 97.29\% and 95\% accuracy on ADNI for the
+binary CN vs.\ AD, CN vs.\ MCI and AD vs.\ MCI tasks, respectively.
+
+\subsection{Feature extraction}
+\label{sec:rw_features}
+
+A second line of work concentrates on \emph{what} is given to the classifier.
+Some studies restrict the input to regions known to be affected early in AD:
+\textcite{chitradevi2020analysis} optimize the selection of hippocampal
+sub-regions before an AlexNet classifier, and \textcite{liu2020multimodel}
+segment the hippocampus before classifying it. Others learn the representation
+without labels, as in the ensemble of convolutional autoencoders of
+\textcite{hedayati2021deep} or the unsupervised PCANet plus $k$-means pipeline of
+\textcite{bi2020computer}. A third group combines sparse learning with deep
+networks \parencite{chen2021iterative} or rely on a feed-forward network built around local phase quantization
+features, as in the LPQNet of \textcite{kaplan2021feedforward}. Unlike end-to-end CNNs,
+these pipelines make the feature-extraction step an explicit design decision.
+
+\subsection{Explainability}
+\label{sec:rw_xai}
+
+Because deep models behave as black boxes, explainable artificial intelligence
+(XAI) has become a companion topic to classification accuracy.
+\textcite{taiyebkhosroshahi2025explainable} review its use in AD neuroimaging and
+highlight four techniques: SHAP and LIME, which attribute a prediction to
+individual input features; Grad-CAM, which marks the image regions that drive the
+decision of a CNN; and layer-wise relevance propagation (LRP), which redistributes
+the prediction back through the network. They describe applications to MRI and PET
+for identifying biomarkers, tracking progression and distinguishing disease
+stages, and they list dataset limitations, regulatory concerns and the lack of
+standardization as open challenges.
+
+Explanation work is not restricted to images. \textcite{ullah2026explainable}
+apply SHAP to structured clinical and behavioral data, where a deep neural network
+reaches 98.01\% accuracy, and use it to single out family history, smoking and
+early cognitive symptoms as influential predictors. \textcite{nami2026rdocinformed}
+argue for a further step: grounding explanations in the Research Domain Criteria
+(RDoC) framework, so that model outputs are expressed in terms of cognitive
+domains such as episodic memory instead of raw features or image regions.
+Finally, \cref{tab:research_matrix} does not record whether each study offers any
+explanation of its predictions, which remains an open point of comparison.
+
+\subsection{Reporting practices and caveats}
+\label{sec:rw_caveats}
+
+Direct comparison across these studies is difficult. Cohort sizes range from a
+few hundred subjects to over a hundred thousand images, and several studies count
+images rather than subjects: for example, \textcite{sathishkumar2022alexnet} report
+98.35\% accuracy for AlexNet on more than 100,000 OASIS images,
+\textcite{deepa2022optimization} classify 819 ADNI images, and
+\textcite{elmotelb2025novel} use 6,400 public slices. When slices from one subject
+can fall into both training and test sets, accuracy is overestimated, so a
+subject-level split is essential; \textcite{zhao2024vision} state explicitly that
+they use one. In \cref{tab:research_matrix}, only \textcite{ebrahimi2021deep} and
+\textcite{kong2022multimodal} separate data at the subject level (they use one scan
+per subject), whereas \textcite{janghel2021deep}, \textcite{liu2021alzheimers},
+\textcite{deepa2022optimization} and \textcite{helaly2022deep} split randomly over
+images, in some cases after augmentation, and most of the remaining studies do not
+report the level of the split at all.
+
+Tasks also differ (CN vs.\ AD, MCI vs.\ CN, CN/MCI/AD), and accuracies obtained
+on different tasks are not interchangeable: several studies report a binary result
+alongside a lower multi-class one, as \textcite{li2020detecting} do with 97.37\% for
+AD vs.\ CN and 89.47\% for the three-class task. The metrics reported also differ.
+\cref{tab:research_matrix} lists accuracy only, because precision and recall are
+not reported consistently across the primary studies, although
+\textcite{nibila2026artificial} stress that accuracy alone is insufficient and
+should be accompanied by precision, recall and related measures.
