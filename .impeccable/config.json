@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "fraunces",
+        "createdAt": "2026-11-12T01:23:36.790Z",
+        "reason": "user chose proposal D (Fraunces serif titles) after comparing rendered mockups"
+      }
+    ]
+  }
+}
