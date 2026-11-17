@@ -41,7 +41,7 @@
   <ol class="stops">
     <li style="--i:0"><b>01</b><span>Alzheimer</span><em>qué es y cómo avanza</em></li>
     <li style="--i:1"><b>02</b><span>Neuroimágenes</span><em>qué información traen</em></li>
-    <li style="--i:2"><b>03</b><span>Estado del arte</span><em>qué tan bien funciona</em></li>
+    <li style="--i:2"><b>03</b><span>Estado del arte</span><em>qué modelos se han usado</em></li>
     <li style="--i:3"><b>04</b><span>OASIS-1</span><em>nuestra base de datos</em></li>
     <li style="--i:4"><b>05</b><span>CNNs</span><em>cómo “ve” una red</em></li>
     <li style="--i:5"><b>06</b><span>Atención</span><em>en qué se fija el modelo</em></li>
@@ -156,22 +156,37 @@
   <i data-s="1" hidden></i><i data-s="2" hidden></i><i data-s="3" hidden></i>
 </section>
 
-<!-- 08 ESTADO DEL ARTE -->
+<!-- 08 ESTADO DEL ARTE: six model families, one study each (Nibila y Sivagami, 2026) -->
 <section class="scene light" id="sota" data-tr="rise">
-  <div class="hd"><p class="eyebrow">03 · Estado del arte</p><h2 class="ttl" id="soT">Casi todos reportan <em>más de 90 %</em></h2></div>
-  <svg class="plot" id="soPlot" viewBox="0 0 1240 700" role="img" aria-label="Exactitud reportada por 18 estudios de clasificación de Alzheimer, coloreada según cómo separan entrenamiento y prueba"></svg>
-  <div class="side">
-    <div class="leg">
-      <span><i class="lg img"></i>Dividen por imagen</span>
-      <span><i class="lg nr"></i>No lo reportan o no aplica</span>
-      <span><i class="lg sub"></i>Dividen por persona</span>
-    </div>
-    <p class="msg m1">Cada punto es un resultado publicado (una tarea de un estudio).</p>
-    <p class="msg m2">Pero la mayoría <b>no separa por persona</b>, o no lo dice.</p>
-    <p class="msg m3">En CN vs AD, los que sí separan por persona reportan entre <b>92 y 94 %</b>.</p>
+  <div class="hd"><p class="eyebrow">03 · Estado del arte</p><h2 class="ttl">¿Qué modelos <em>se han usado</em>?</h2></div>
+  <div class="cards">
+    <article class="mc"><svg class="an" id="anSvm" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
+      <p class="k">ML clásico</p><h3>Máquina de soporte vectorial</h3>
+      <p class="d">Traza la frontera que separa las clases con el mayor margen.</p>
+      <p class="pp"><b>Richhariya et al. (2020)</b><br>RM estructural · ADNI · 150 personas · CN vs AD</p><span class="acc">90 %</span></div></article>
+    <article class="mc"><svg class="an" id="anRf" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
+      <p class="k">ML clásico</p><h3>Bosque aleatorio</h3>
+      <p class="d">Muchos árboles de decisión hacen preguntas a los datos y votan.</p>
+      <p class="pp"><b>Parameswari et al. (2022)</b><br>RM · OASIS · 416 personas · CN vs AD</p><span class="acc">93.6 %</span></div></article>
+    <article class="mc"><svg class="an" id="anKnn" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
+      <p class="k">ML clásico</p><h3>k vecinos más cercanos</h3>
+      <p class="d">Un caso nuevo toma la clase de los ejemplos más parecidos.</p>
+      <p class="pp"><b>Elgammal et al. (2022)</b><br>RM · ADNI · 750 personas · CN / MCI / AD</p><span class="acc">99 %</span></div></article>
+    <article class="mc" data-s="1"><svg class="an" id="anDnn" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
+      <p class="k">Deep learning</p><h3>Red neuronal profunda</h3>
+      <p class="d">Capas de neuronas conectadas transforman los datos hasta decidir.</p>
+      <p class="pp"><b>Soundarya et al. (2021)</b><br>RM estructural · OASIS · 416 personas · CN vs AD</p><span class="acc">92 %</span></div></article>
+    <article class="mc" data-s="1"><svg class="an" id="anCnn" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
+      <p class="k">Deep learning</p><h3>Red convolucional</h3>
+      <p class="d">Filtros que recorren la imagen y aprenden sus patrones solos.</p>
+      <p class="pp"><b>Helaly et al. (2022)</b><br>RM 3D · ADNI · 300 personas · CN vs AD</p><span class="acc">97.4 %</span></div></article>
+    <article class="mc" data-s="1"><svg class="an" id="anLstm" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
+      <p class="k">Deep learning</p><h3>Red recurrente (LSTM)</h3>
+      <p class="d">Lee una secuencia paso a paso y recuerda lo anterior.</p>
+      <p class="pp"><b>Hong et al. (2019)</b><br>RM · ADNI · 1,105 personas · MCI vs AD</p><span class="acc">93 %</span></div></article>
   </div>
-  <p class="src">15 estudios de la matriz del manuscrito + Zhao et al. (2024) y Mahmud Joy et al. (2025)</p>
-  <i data-s="1" hidden></i><i data-s="2" hidden></i>
+  <p class="warn" data-s="2">De los 84 estudios revisados, lo que pasa de 95 % suele tener <b>pocos datos</b>, <b>clases desbalanceadas</b> o <b>prueba traslapada</b> con el entrenamiento.</p>
+  <p class="src">Nibila y Sivagami (2026), Front. Artif. Intell. · Helaly et al.: valor del artículo original</p>
 </section>
 
 <!-- 09 FUGA -->

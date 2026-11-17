@@ -175,49 +175,141 @@
     };
   })();
 
-  /* ---------------- 08 estado del arte: reported accuracy, coloured by how train/test were split ----------------
-     Rows come from docs/manuscript/tables/research_matrix.tex (Chen & Xia 2021 left out: accuracy not verified)
-     plus Zhao et al. 2024 and ViTAD (Mahmud Joy et al. 2025) from the related-work text.
-     split: img = image-level, sub = subject-level, nr = not reported / not verified / unsupervised.
-     lab: indices of the AD vs CN results labelled in the last step. */
+  /* ---------------- 08 estado del arte: six model families, each with a small looping animation ----------------
+     Studies and numbers from Nibila y Sivagami (2026), Front. Artif. Intell. 10.3389/frai.2026.1748985
+     (Helaly et al. 2022: CN vs AD value from the original paper). */
   (function () {
-    var S = [
-      ['Bi et al. (2020)', 'nr', [89.15, 92.6, 97.01, 91.25]],
-      ['Chitradevi y Prabha (2020)', 'nr', [95]],
-      ['Li et al. (2020)', 'nr', [97.37, 88.12, 92.11, 89.47]],
-      ['Liu et al. (2020)', 'nr', [88.9, 76.2]],
-      ['Ebrahimi et al. (2021)', 'sub', [91.78], [0]],
-      ['Hedayati et al. (2021)', 'nr', [95, 90, 92.5]],
-      ['Janghel y Rathore (2021)', 'img', [100, 76.32]],
-      ['Kaplan et al. (2021)', 'nr', [99.68, 99.62]],
-      ['Liu et al. (2021)', 'img', [84.65, 72.96, 93.02]],
-      ['Deepa y Chokkalingam (2022)', 'img', [97]],
-      ['Helaly et al. (2022)', 'img', [97.36, 97]],
-      ['Kong et al. (2022)', 'sub', [93.21, 86.52, 85.63, 87.67], [0]],
-      ['Kumar et al. (2022)', 'nr', [98.35]],
-      ['Sharma et al. (2022)', 'nr', [97.15, 97.29, 95]],
-      ['Zhao et al. (2024)', 'sub', [94.07, 92.14], [0]],
-      ['Elmotelb et al. (2025)', 'nr', [95.21, 98.26]],
-      ['Mahmud Joy et al. (2025)', 'nr', [99.98]]
-    ];
-    var P = $('#soPlot'), X0 = 330, X1 = 1215, Y0 = 26, RH = 36, lo = 70, hi = 100;
-    function sx(v) { return X0 + (v - lo) / (hi - lo) * (X1 - X0); }
-    var yAx = Y0 + S.length * RH;
-    for (var v = lo; v <= hi; v += 5) {
-      svg('line', { 'class': 'gl', x1: sx(v), x2: sx(v), y1: Y0 - 18, y2: yAx - 8 }, P);
-      svg('text', { 'class': 'ax', x: sx(v), y: yAx + 22, 'text-anchor': 'middle' }, P).textContent = v + ' %';
-    }
-    svg('text', { 'class': 'ax', x: X1, y: yAx + 56, 'text-anchor': 'end' }, P).textContent = 'exactitud reportada →';
-    S.forEach(function (r, i) {
-      var y = Y0 + i * RH + RH / 2, g = svg('g', { 'class': 'row ' + r[1] }, P);
-      svg('text', { 'class': 'nm', x: X0 - 22, y: y + 6, 'text-anchor': 'end' }, g).textContent = r[0];
-      r[2].forEach(function (a, k) {
-        svg('circle', { 'class': 'pt ' + r[1], cx: sx(a), cy: y, r: 11 }, g);
-        if (r[3] && r[3].indexOf(k) >= 0) svg('text', { 'class': 'vl', x: sx(a), y: y - 16, 'text-anchor': 'middle' }, g).textContent = a.toFixed(1);
+    var A = {}, k;
+    function cyc(t, T) { return (t % T) / T; }
+    function clamp(u) { return Math.max(0, Math.min(1, u)); }
+
+    /* SVM: the boundary swings, settles on the widest margin, support vectors light up */
+    (function () {
+      var s = $('#anSvm');
+      [[40, 140], [60, 165], [35, 105], [80, 150], [70, 105], [95, 178], [25, 165]].forEach(function (p) { svg('circle', { 'class': 'c0', cx: p[0], cy: p[1], r: 7 }, s); });
+      [[150, 50], [130, 80], [165, 85], [120, 35], [172, 130], [148, 112], [105, 70]].forEach(function (p) { svg('circle', { 'class': 'c1', cx: p[0], cy: p[1], r: 7 }, s); });
+      var m1 = svg('line', { 'class': 'mg' }, s), m2 = svg('line', { 'class': 'mg' }, s), ln = svg('line', { 'class': 'ln' }, s);
+      var r1 = svg('circle', { 'class': 'ring', cx: 105, cy: 70, r: 12 }, s), r2 = svg('circle', { 'class': 'ring', cx: 70, cy: 105, r: 12 }, s);
+      function put(l, a, off) {
+        var c = Math.cos(a), sn = Math.sin(a), ox = -sn * off, oy = c * off;
+        l.setAttribute('x1', 100 + ox - c * 150); l.setAttribute('y1', 100 + oy - sn * 150);
+        l.setAttribute('x2', 100 + ox + c * 150); l.setAttribute('y2', 100 + oy + sn * 150);
+      }
+      A.svm = function (t) {
+        var u = cyc(t, 5), dec = Math.exp(-u * 6), a = Math.PI / 4 + .7 * Math.cos(u * 14) * dec, on = clamp((u - .45) / .15);
+        put(ln, a, 0); put(m1, a, 24); put(m2, a, -24);
+        m1.style.opacity = m2.style.opacity = r1.style.opacity = r2.style.opacity = on.toFixed(2);
+      };
+    })();
+
+    /* Random forest: a case falls down a tree; three trees vote */
+    (function () {
+      var s = $('#anRf'), N = [[100, 26], [55, 78], [145, 78], [30, 132], [80, 132], [120, 132], [170, 132]];
+      var E = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [2, 6]], ed = E.map(function (e) {
+        return svg('line', { 'class': 'ed', x1: N[e[0]][0], y1: N[e[0]][1], x2: N[e[1]][0], y2: N[e[1]][1] }, s);
       });
-    });
-    var title = $('#soT'), T = ['Casi todos reportan <em>más de 90 %</em>', '¿Cómo <em>separaron</em> los datos?', 'Separando por persona: <em>92–94 %</em>'];
-    SH.sota = function (sc, step) { title.innerHTML = T[Math.min(step, 2)]; };
+      var nd = N.map(function (p, i) { return svg('circle', { 'class': i > 2 ? (i % 2 ? 'c0' : 'c1') : 'nd', cx: p[0], cy: p[1], r: i > 2 ? 11 : 10 }, s); });
+      var dot = svg('circle', { 'class': 'cq', r: 7 }, s);
+      svg('text', { x: 14, y: 182 }, s).textContent = 'votos';
+      var votes = [0, 1, 2].map(function (i) { return svg('circle', { cx: 92 + i * 26, cy: 177, r: 9, 'class': 'nd' }, s); });
+      var PATHS = [[0, 2, 6], [0, 1, 4], [0, 2, 5]];       /* leaves 6 and 4 are AD, 5 is CN: the vote ends 2-1 for AD */
+      A.rf = function (t) {
+        var T = 2.2, n = Math.floor(t / T) % 4, u = cyc(t, T);
+        votes.forEach(function (v, i) { v.setAttribute('class', i < n ? (PATHS[i][2] === 5 ? 'c0' : 'c1') : 'nd'); });
+        if (n === 3) { dot.style.opacity = 0; ed.forEach(function (e) { e.setAttribute('class', 'ed'); }); return; }
+        var P = PATHS[n], seg = Math.min(1, Math.floor(u * 2.6)), f = clamp(u * 2.6 - seg), a = N[P[seg]], b = N[P[Math.min(2, seg + 1)]];
+        dot.style.opacity = 1;
+        dot.setAttribute('cx', a[0] + (b[0] - a[0]) * f); dot.setAttribute('cy', a[1] + (b[1] - a[1]) * f);
+        E.forEach(function (e, i) {
+          var hot = (e[0] === P[0] && e[1] === P[1]) || (seg >= 1 && e[0] === P[1] && e[1] === P[2]);
+          ed[i].setAttribute('class', hot ? 'ed hot' : 'ed');
+        });
+      };
+    })();
+
+    /* KNN: a new case looks for its 3 nearest neighbours and takes the majority class */
+    (function () {
+      var s = $('#anKnn');
+      var P = [[70, 85, 0], [110, 70, 1], [95, 135, 1], [140, 125, 0], [40, 40, 0], [160, 170, 0], [30, 120, 0], [160, 40, 1], [172, 92, 1], [50, 178, 1]];
+      var dots = P.map(function (p) { return svg('circle', { 'class': 'c' + p[2], cx: p[0], cy: p[1], r: 8 }, s); });
+      var near = [0, 1, 2], rings = near.map(function (i) { return svg('circle', { 'class': 'ring', cx: P[i][0], cy: P[i][1], r: 13 }, s); });
+      var halo = svg('circle', { 'class': 'mg', cx: 100, cy: 100, fill: 'none' }, s), q = svg('circle', { 'class': 'cq', cx: 100, cy: 100, r: 9 }, s);
+      A.knn = function (t) {
+        var u = cyc(t, 4.2), g = clamp(u / .35), on = u > .35 && u < .92;
+        halo.setAttribute('r', (40 * (1 - Math.pow(1 - g, 3))).toFixed(1));
+        halo.style.opacity = u < .92 ? 1 : 0;
+        rings.forEach(function (r) { r.style.opacity = on ? 1 : 0; });
+        q.setAttribute('class', u > .55 && u < .92 ? 'c1' : 'cq');
+      };
+    })();
+
+    /* Deep neural network: activity flows layer by layer to the output */
+    (function () {
+      var s = $('#anDnn'), X = [28, 76, 124, 172], C = [3, 4, 4, 2], L = [], E = [];
+      X.forEach(function (x, li) { var l = []; for (var i = 0; i < C[li]; i++) l.push([x, 100 + (i - (C[li] - 1) / 2) * 38]); L.push(l); });
+      for (var li = 0; li < 3; li++) L[li].forEach(function (a) { L[li + 1].forEach(function (b) { E.push([li, svg('line', { 'class': 'ed', x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, s)]); }); });
+      var nodes = []; L.forEach(function (l, li) { l.forEach(function (p, i) { nodes.push([li, i, svg('circle', { 'class': 'nd', cx: p[0], cy: p[1], r: 11 }, s)]); }); });
+      A.dnn = function (t) {
+        var u = cyc(t, 3.2), cur = Math.floor(u * 5);        /* 0..3 layers, 4 = result held */
+        E.forEach(function (e) { e[1].setAttribute('class', e[0] === cur ? 'ed hot' : 'ed'); });
+        nodes.forEach(function (n) {
+          var on = n[0] === cur || (cur === 4 && n[0] === 3 && n[1] === 1);
+          n[2].setAttribute('class', on ? (cur === 4 ? 'nd c1' : 'nd ndon') : 'nd');
+        });
+      };
+    })();
+
+    /* CNN: a 3x3 window slides over the input and fills the feature map */
+    (function () {
+      var s = $('#anCnn'), ins = [], outs = [], i, j, seed = 7;
+      function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+      for (j = 0; j < 6; j++) for (i = 0; i < 6; i++) {
+        var gv = Math.round(70 + rnd() * 150);
+        ins.push(svg('rect', { x: 8 + i * 16, y: 52 + j * 16, width: 16, height: 16, fill: 'rgb(' + gv + ',' + gv + ',' + gv + ')', stroke: '#F1F4F7', 'stroke-width': 1 }, s));
+      }
+      for (j = 0; j < 4; j++) for (i = 0; i < 4; i++) outs.push(svg('rect', { 'class': 'cell', x: 128 + i * 16, y: 68 + j * 16, width: 16, height: 16 }, s));
+      var win = svg('rect', { x: 8, y: 52, width: 48, height: 48, fill: 'none', stroke: '#E0A22E', 'stroke-width': 3.5, rx: 3 }, s);
+      var link = svg('line', { stroke: '#E0A22E', 'stroke-width': 2, 'stroke-dasharray': '4 4' }, s);
+      svg('text', { x: 8, y: 40 }, s).textContent = 'imagen';
+      svg('text', { x: 128, y: 56 }, s).textContent = 'mapa';
+      A.cnn = function (t) {
+        var u = cyc(t, 6.4), n = Math.min(16, Math.floor(u * 20)), p = Math.min(15, n), px = p % 4, py = Math.floor(p / 4);
+        win.setAttribute('x', 8 + px * 16); win.setAttribute('y', 52 + py * 16);
+        link.setAttribute('x1', 56 + px * 16); link.setAttribute('y1', 76 + py * 16);
+        link.setAttribute('x2', 128 + px * 16); link.setAttribute('y2', 76 + py * 16);
+        win.style.opacity = link.style.opacity = n < 16 ? 1 : 0;
+        outs.forEach(function (o, k2) { o.setAttribute('class', k2 < n ? 'c0' : 'cell'); o.style.opacity = k2 < n ? (.35 + .65 * ((k2 * 7) % 5) / 4).toFixed(2) : 1; });
+      };
+    })();
+
+    /* LSTM: steps of a sequence are read one by one while a memory line carries what came before */
+    (function () {
+      var s = $('#anLstm'), BX = [14, 61, 108, 155], boxes = [], ups = [];
+      svg('line', { 'class': 'ed', x1: 8, y1: 66, x2: 192, y2: 66, 'stroke-width': 4 }, s);
+      svg('text', { x: 8, y: 50 }, s).textContent = 'memoria';
+      BX.forEach(function (x, i) {
+        boxes.push(svg('rect', { 'class': 'cell', x: x, y: 120, width: 32, height: 32, rx: 6 }, s));
+        svg('ellipse', { cx: x + 16, cy: 136, rx: 10, ry: 8, fill: 'none', stroke: '#9AA3B2', 'stroke-width': 2 }, s);
+        ups.push(svg('line', { 'class': 'ed', x1: x + 16, y1: 118, x2: x + 16, y2: 70 }, s));
+        svg('text', { x: x + 10, y: 175 }, s).textContent = 't' + (i + 1);
+      });
+      var mem = svg('circle', { 'class': 'cq', cy: 66, r: 8 }, s);
+      var out = svg('text', { x: 150, y: 50, 'class': 'out' }, s); out.textContent = '→ AD';
+      A.lstm = function (t) {
+        var u = cyc(t, 4.4), x = 8 + clamp(u / .8) * 184, done = u > .8;
+        mem.setAttribute('cx', x.toFixed(1));
+        mem.setAttribute('r', (6 + 6 * clamp(u / .8)).toFixed(1));      /* the memory grows as it reads more steps */
+        BX.forEach(function (bx, i) {
+          var on = x >= bx + 16 - 6;
+          boxes[i].setAttribute('class', on ? 'cell lit' : 'cell');
+          ups[i].setAttribute('class', on && x < bx + 60 ? 'ed hot' : 'ed');
+        });
+        out.style.opacity = done ? 1 : 0;
+      };
+    })();
+
+    TICK.sota = function (t) { for (k in A) A[k](t); };
+    for (k in A) A[k](0);
   })();
 
   /* ---------------- 09 fuga: 6 people x 6 slices, split by image vs by person ---------------- */

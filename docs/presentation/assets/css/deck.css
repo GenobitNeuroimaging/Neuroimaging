@@ -142,28 +142,34 @@
 #atrofia .dmnote b{color:var(--ink)}
 
 /* ---------- 08 estado del arte ---------- */
-#sota .plot{position:absolute;left:96px;top:250px;width:1240px;height:700px;overflow:visible}
-#sota .plot text{font-family:var(--body)}
-#sota .plot .nm{font-size:19px;fill:var(--mute)}
-#sota .plot .ax{font:500 18px var(--mono);fill:#6B7280}
-#sota .plot .gl{stroke:var(--line);stroke-width:2}
-#sota .plot .row{transition:opacity .6s}
-#sota .plot .pt{fill:#9AA3B2;stroke:var(--paper);stroke-width:3;transition:fill .6s,r .6s}
-#sota.st1 .pt.img{fill:var(--bad)}
-#sota.st1 .pt.nr{fill:#C5CBD3}
-#sota.st1 .pt.sub{fill:var(--teal)}
-#sota.st2 .row:not(.sub){opacity:.18}
-#sota.st2 .row.sub .nm{fill:var(--ink);font-weight:600}
-#sota .plot .vl{font:700 18px var(--mono);fill:var(--teal);opacity:0;transition:opacity .6s .3s}
-#sota.st2 .plot .vl{opacity:1}
-#sota .side{position:absolute;left:1400px;right:128px;top:280px}
-#sota .leg{display:flex;flex-direction:column;gap:14px;font-size:24px;opacity:0;transition:opacity .6s}
-#sota.st1 .leg{opacity:1}
-#sota .lg{display:inline-block;width:22px;height:22px;border-radius:50%;margin-right:12px;vertical-align:-3px}
-#sota .lg.img{background:var(--bad)}#sota .lg.nr{background:#C5CBD3}#sota .lg.sub{background:var(--teal)}
-#sota .msg{position:absolute;left:0;right:0;top:220px;margin:0;font-size:32px;line-height:1.4;color:var(--mute);opacity:0}
-#sota .msg b{color:var(--ink)}
-#sota[data-step="0"] .m1,#sota[data-step="1"] .m2,#sota[data-step="2"] .m3{opacity:1}
+#sota .src{top:118px;bottom:auto}
+#sota .cards{position:absolute;left:128px;right:128px;top:262px;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:296px;gap:24px}
+#sota .mc{position:relative;display:grid;grid-template-columns:190px 1fr;gap:22px;align-items:start;background:#fff;border:2px solid var(--line);border-radius:22px;padding:22px 24px 22px 22px;box-sizing:border-box}
+#sota .an{width:190px;height:190px;border-radius:16px;background:#F1F4F7;display:block}
+#sota .k{font:500 18px var(--mono);letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin:0}
+#sota .mc[data-s] .k{color:var(--indigo)}
+#sota h3{font:800 31px/1.05 var(--display);margin:8px 0 8px;padding-right:70px}
+#sota .d{font-size:20px;line-height:1.35;color:var(--mute);margin:0}
+#sota .pp{font:400 17px/1.4 var(--body);color:#6B7280;margin:12px 0 0}
+#sota .pp b{font-weight:600;color:var(--ink)}
+#sota .acc{position:absolute;right:20px;top:20px;font:700 20px var(--mono);color:var(--teal);background:var(--soft-teal);border-radius:10px;padding:4px 10px}
+#sota .mc[data-s] .acc{color:var(--indigo);background:var(--soft-indigo)}
+#sota .warn{position:absolute;left:128px;right:128px;top:892px;margin:0;font-size:25px;line-height:1.4;color:var(--mute)}
+#sota .warn b{color:var(--ink)}
+/* model animations (driven by TICK.sota) */
+#sota .an .c0{fill:var(--teal)}#sota .an .c1{fill:var(--lav)}#sota .an .cq{fill:var(--amber)}
+#sota .an .ln{stroke:var(--ink);stroke-width:3;stroke-linecap:round}
+#sota .an .mg{stroke:#9AA3B2;stroke-width:2;stroke-dasharray:5 5}
+#sota .an .ed{stroke:#C5CBD3;stroke-width:2;fill:none}
+#sota .an .hot{stroke:var(--amber);stroke-width:4}
+#sota .an .nd{fill:#fff;stroke:#9AA3B2;stroke-width:2.5}
+#sota .an .ndon{fill:var(--amber);stroke:var(--amber)}
+#sota .an .cell{fill:#fff;stroke:#C5CBD3;stroke-width:1.5}
+#sota .an .ring{fill:none;stroke:var(--amber);stroke-width:2.5}
+#sota .an text{font:700 15px var(--mono);fill:var(--ink)}
+#sota .an .nd.c1{fill:var(--lav);stroke:var(--lav)}
+#sota .an .lit{fill:var(--soft-teal);stroke:var(--teal);stroke-width:2.5}
+#sota .an .out{fill:var(--indigo);font-size:18px}
 
 /* ---------- 09 fuga ---------- */
 #fuga .bins{position:absolute;left:128px;right:128px;top:300px;height:420px;display:grid;grid-template-columns:2fr 1fr;gap:40px;opacity:0;transition:opacity .6s}
@@ -270,4 +276,3 @@
 #fin .bye p{font-size:34px;color:var(--dim);margin:24px 0 0}
 #fin .bye .mono{color:var(--sky);font-size:30px}
 #fin .hx2{position:absolute;left:360px;top:700px;width:1200px;height:200px;overflow:visible}
-#sota .src{left:1400px;right:128px;bottom:auto;top:880px;text-align:left}
