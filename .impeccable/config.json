@@ -8,6 +8,15 @@
         "value": "fraunces",
         "createdAt": "2026-11-12T01:23:36.790Z",
         "reason": "user chose proposal D (Fraunces serif titles) after comparing rendered mockups"
+      },
+      {
+        "rule": "clipped-overflow-container",
+        "value": "*",
+        "files": [
+          "docs/presentation/index.html"
+        ],
+        "createdAt": "2026-11-17T22:12:49.544Z",
+        "reason": "Claude: image frames (CNN kernel window, feature-map mask, attention heat map, PET/fMRI overlays) clip their overlays on purpose; no tooltips or menus inside"
       }
     ]
   }
