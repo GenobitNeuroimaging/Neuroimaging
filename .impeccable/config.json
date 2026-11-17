@@ -17,6 +17,21 @@
         ],
         "createdAt": "2026-11-17T22:12:49.544Z",
         "reason": "Claude: image frames (CNN kernel window, feature-map mask, attention heat map, PET/fMRI overlays) clip their overlays on purpose; no tooltips or menus inside"
+      },
+      {
+        "rule": "overused-font",
+        "value": "montserrat",
+        "createdAt": "2026-11-17T22:13:52.899Z",
+        "reason": "Claude: Montserrat is the GenoBit brand tagline font in the wordmark, carried over from the relaunch deck"
+      },
+      {
+        "rule": "all-caps-body",
+        "value": "*",
+        "files": [
+          "docs/presentation/index.html"
+        ],
+        "createdAt": "2026-11-17T22:13:53.594Z",
+        "reason": "Claude: uppercase is only used for short mono eyebrow/caption labels (2-6 words), not body passages"
       }
     ]
   }

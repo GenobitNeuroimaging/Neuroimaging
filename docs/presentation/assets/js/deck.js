@@ -253,8 +253,8 @@
       r.innerHTML = '<span>' + l[1] + '<small>' + l[2] + '</small></span><div class="tr"><i style="background:' + l[3] + '"></i></div><b>' + O[l[0]] + '</b>';
       box.appendChild(r); fills.push([$('i', r), Math.max(1.2, O[l[0]] / mx * 100)]);
     });
-    SH.oasis = function (sc, step) { fills.forEach(function (f, i) { f[0].style.transitionDelay = (i * .15) + 's'; f[0].style.width = step >= 1 ? f[1] + '%' : '0'; }); };
-    SH.oasis.reset = function () { fills.forEach(function (f) { f[0].style.width = '0'; }); };
+    SH.oasis = function (sc, step) { fills.forEach(function (f, i) { f[0].style.transitionDelay = (i * .15) + 's'; f[0].style.transform = 'scaleX(' + (step >= 1 ? f[1] / 100 : 0) + ')'; }); };
+    SH.oasis.reset = function () { fills.forEach(function (f) { f[0].style.transform = 'scaleX(0)'; }); };
   })();
 
   /* ---------------- 12 cnn: a 3x3 filter sweeps the slice while its feature map is revealed ---------------- */

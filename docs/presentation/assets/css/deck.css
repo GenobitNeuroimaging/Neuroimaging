@@ -189,7 +189,7 @@
 #oasis .br span{font-size:25px;color:#fff;line-height:1.2}
 #oasis .br span small{display:block;font:500 18px var(--mono);color:var(--dim)}
 #oasis .br .tr{height:44px;background:#2A2D33;border-radius:10px;overflow:hidden}
-#oasis .br .tr i{display:block;height:100%;width:0;border-radius:10px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+#oasis .br .tr i{display:block;height:100%;width:100%;border-radius:10px;transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
 #oasis .br b{font:700 32px var(--mono);color:#fff;text-align:right}
 
 /* ---------- 11 datos ---------- */
