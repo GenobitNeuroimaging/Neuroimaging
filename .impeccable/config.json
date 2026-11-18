@@ -32,6 +32,15 @@
         ],
         "createdAt": "2026-11-17T22:13:53.594Z",
         "reason": "Claude: uppercase is only used for short mono eyebrow/caption labels (2-6 words), not body passages"
+      },
+      {
+        "rule": "radial-halo",
+        "value": "*",
+        "files": [
+          "docs/presentation/index.html"
+        ],
+        "createdAt": "2026-11-18T03:05:16.267Z",
+        "reason": "Claude: the radial gradients are the illustrative PET and fMRI colour maps on the modality cards (labelled as illustrative), not decorative background glows"
       }
     ]
   }

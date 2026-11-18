@@ -103,9 +103,9 @@
 #prop .pp b{display:block;font:800 32px/1.1 var(--display);margin-top:16px}
 #prop .pp span{display:block;font-size:22px;line-height:1.35;color:var(--mute);margin-top:8px}
 #prop .status{position:absolute;left:128px;right:128px;top:570px;display:grid;grid-template-columns:1fr 1fr;gap:40px}
-#prop .col h4{font:800 40px var(--display);margin:0 0 14px;display:flex;align-items:center;gap:14px}
-#prop .col h4 i{width:22px;height:22px;border-radius:50%}
-#prop .col h4 .ok{background:var(--teal)}#prop .col h4 .nx{background:var(--lav)}
+#prop .col h3{font:800 40px var(--display);margin:0 0 14px;display:flex;align-items:center;gap:14px}
+#prop .col h3 i{width:22px;height:22px;border-radius:50%}
+#prop .col h3 .ok{background:var(--teal)}#prop .col h3 .nx{background:var(--lav)}
 #prop .col ul{margin:0;padding:0 0 0 28px;font-size:28px;line-height:1.6;color:var(--mute)}
 
 /* ---------- 15 fin ---------- */
