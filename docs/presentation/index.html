@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>GenoBit Neuroimaging · Avances</title>
-<meta name="description" content="Avances del proyecto Neuroimaging de GenoBit: Alzheimer, neuroimágenes, estado del arte, OASIS-1, CNNs, transformers y mecanismos de atención.">
+<title>CNNs interpretables para clasificar Alzheimer</title>
+<meta name="description" content="CNNs interpretables para clasificar Alzheimer en resonancia magnética estructural: avances del proyecto Neuroimaging de GenoBit.">
 <meta name="theme-color" content="#1F1F1F">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
 <div id="stage" class="isdark" aria-live="polite">
 
 <!-- 01 PORTADA -->
-<section class="scene dark" id="cover"><i data-s="1" hidden></i>
+<section class="scene dark" id="cover">
   <svg id="hero" viewBox="0 0 1920 1080" role="img" aria-label="Corte de un cerebro dibujado con líneas que se convierte en el logo de GenoBit">
     <g id="brainG"></g>
     <g id="logoG" transform="translate(960 440) scale(1.7) translate(-350 -225)">
@@ -30,25 +30,11 @@
     </g>
   </svg>
   <canvas id="dnaCv" width="1920" height="1080" aria-hidden="true"></canvas>
-  <div class="center"><p class="k">GenoBit · Avances del proyecto</p><h1>Neuroimaging</h1><p class="s">CNNs interpretables para Alzheimer</p></div>
+  <div class="center"><p class="k">GenoBit Neuroimaging · Avances</p><h1>CNNs interpretables para clasificar Alzheimer</h1><p class="s">en resonancia magnética estructural</p></div>
   <div id="wordmark"><b>GenoBit</b><span>Genomics and Bioinformatics</span></div>
 </section>
 
-<!-- 02 RUTA -->
-<section class="scene light" id="ruta" data-tr="door">
-  <div class="hd"><p class="eyebrow">En 15 minutos</p><h2 class="ttl">Lo que vamos a <em>ver</em></h2></div>
-  <svg class="road" viewBox="0 0 1664 200" aria-hidden="true"><path class="rd-bg" d="M40 100 H1624"/><path class="rd" pathLength="1" d="M40 100 H1624"/></svg>
-  <ol class="stops">
-    <li style="--i:0"><b>01</b><span>Alzheimer</span><em>qué es y cómo avanza</em></li>
-    <li style="--i:1"><b>02</b><span>Neuroimágenes</span><em>cómo se toman</em></li>
-    <li style="--i:2"><b>03</b><span>Estado del arte</span><em>predicción y procesamiento</em></li>
-    <li style="--i:3"><b>04</b><span>Datos</span><em>OASIS-1</em></li>
-    <li style="--i:4"><b>05</b><span>CNNs</span><em>la convolución</em></li>
-    <li style="--i:5"><b>06</b><span>Transformers</span><em>y la atención</em></li>
-  </ol>
-</section>
-
-<!-- 03 ALZHEIMER: one looping animation, brain + stages -->
+<!-- 02 ALZHEIMER: one looping animation, brain + real MRI + stages -->
 <section class="scene dark" id="alz" data-tr="circle">
   <div class="hd"><p class="eyebrow">01 · Contexto</p><h2 class="ttl">¿Qué es el <em>Alzheimer</em>?</h2></div>
   <p class="lead intro">Una enfermedad neurodegenerativa y sin cura: el cerebro pierde neuronas y se encoge, de adentro hacia afuera.</p>
@@ -63,12 +49,17 @@
       <ellipse class="rg r2" id="azR2" cx="390" cy="380" rx="72" ry="20" transform="rotate(-8 390 380)"/>
     </g>
   </svg>
+  <div class="mri" role="img" aria-label="Resonancias reales de OASIS-1 al mismo nivel del cerebro: sano, deterioro leve y demencia">
+    <img class="on" src="assets/generated/dementia_nd.jpg" alt=""><img src="assets/generated/dementia_vmd.jpg" alt=""><img src="assets/generated/dementia_md.jpg" alt="">
+    <b id="azTag">CDR 0</b>
+  </div>
+  <p class="mcap">En la RM: los <b>surcos</b> se ensanchan y los <b>ventrículos</b> crecen</p>
   <div class="track"><i class="ln"></i><i class="fill" id="azFill"></i><i class="mk" id="azMk"></i>
     <div class="sg" id="azS0"><b>CN</b><span>Cognitivamente normal</span><em>los cambios empiezan en la <u>corteza entorrinal</u></em></div>
     <div class="sg" id="azS1"><b>MCI</b><span>Deterioro cognitivo leve</span><em>llegan al <u>hipocampo</u>: falla la memoria</em></div>
     <div class="sg" id="azS2"><b>AD</b><span>Demencia por Alzheimer</span><em>se extienden a la <u>neocorteza</u></em></div>
   </div>
-  <p class="src">Esquema · Braak y Braak (1991) · Jack et al. (2018)</p>
+  <p class="src">Esquema · Braak y Braak (1991) · Jack et al. (2018) · RM reales de OASIS-1</p>
 </section>
 
 <!-- 04 MODALIDADES: what each image shows and the machine that takes it -->
@@ -79,19 +70,19 @@
       <div class="pic"><img src="assets/generated/dementia_nd.jpg" alt="Corte de resonancia magnética estructural ponderada en T1"></div>
       <p class="k">RM estructural · T1</p><h3>Anatomía</h3>
       <div class="tool"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="8" y="10" width="64" height="52" rx="16" class="hs"/><circle cx="40" cy="36" r="14" class="br"/><rect x="2" y="64" width="76" height="8" rx="4" class="bd"/></svg>
-        <div><b>Resonador magnético</b><span>imán de 1.5 a 3 teslas + ondas de radio</span></div></div>
+        <div><b>Resonador magnético</b></div></div>
     </article>
     <article class="md" data-s="2">
       <div class="pic pet"><img src="assets/generated/dementia_nd.jpg" alt=""><i></i></div>
       <p class="k">PET</p><h3>Química</h3>
       <div class="tool"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="12" y="14" width="56" height="46" rx="23" class="hs"/><circle cx="40" cy="37" r="13" class="br"/><rect x="2" y="64" width="76" height="8" rx="4" class="bd"/><path d="M60 4 l14 14 M64 8 l-12 12 l-6 0 l0 -6 z" class="sy"/></svg>
-        <div><b>Tomógrafo PET</b><span>+ trazador radiactivo inyectado: FDG, amiloide o tau</span></div></div>
+        <div><b>Tomógrafo PET</b></div></div>
     </article>
     <article class="md" data-s="3">
       <div class="pic fmri"><img src="assets/generated/dementia_nd.jpg" alt=""><i></i></div>
       <p class="k">RM funcional</p><h3>Actividad</h3>
       <div class="tool"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="8" y="10" width="64" height="52" rx="16" class="hs"/><circle cx="40" cy="36" r="14" class="br"/><rect x="2" y="64" width="76" height="8" rx="4" class="bd"/><path d="M28 36 h5 l3 -7 l4 14 l3 -7 h9" class="sy"/></svg>
-        <div><b>El mismo resonador</b><span>muchas imágenes seguidas mientras la persona descansa o hace una tarea</span></div></div>
+        <div><b>El mismo resonador</b></div></div>
     </article>
   </div>
   <p class="src">Colores de PET y RM funcional: ilustrativos</p>
@@ -129,15 +120,6 @@
   <div class="view v-co sprite" data-sprite="plane.coronal"></div>
   <div class="view v-sa sprite" data-sprite="plane.sagittal"></div>
   <span class="vl l-ax">axial · desde arriba</span><span class="vl l-co">coronal · de frente</span><span class="vl l-sa">sagital · de lado</span>
-</section>
-
-<!-- 06 ATROFIA -->
-<section class="scene light" id="atrofia" data-tr="door">
-  <div class="hd"><p class="eyebrow">02 · Neuroimágenes</p><h2 class="ttl">Cómo se ve el Alzheimer <em>en la RM</em></h2></div>
-  <div class="big2"><img id="dmImg" src="assets/generated/dementia_nd.jpg" alt="Resonancia al nivel de los ventrículos"><b id="dmLbl">Sano</b></div>
-  <div class="thumbs noadv" id="dmThumbs"></div>
-  <p class="dmnote">Mismo nivel del cerebro, distintas personas de OASIS-1: los <b>surcos</b> se ensanchan y los <b>ventrículos</b> crecen.</p>
-  <i data-s="1" hidden></i><i data-s="2" hidden></i><i data-s="3" hidden></i>
 </section>
 
 <!-- 07 ESTADO DEL ARTE · PREDICCIÓN: six model families, one study each (Nibila y Sivagami, 2026) -->
@@ -180,25 +162,9 @@
   <p class="src">Imágenes reales de OASIS-1</p>
 </section>
 
-<!-- 09 OASIS -->
-<section class="scene dark" id="oasis" data-tr="circle">
-  <div class="t"><p class="eyebrow">04 · Datos</p><h2 class="ttl">OASIS-1</h2><p class="lead">Open Access Series of Imaging Studies · pública y transversal</p></div>
-  <div class="grid">
-    <div><b>416</b><span>personas</span></div>
-    <div><b>18–96</b><span>años</span></div>
-    <div><b>3–4</b><span>resonancias T1 por sesión</span></div>
-    <div><b>100</b><span>con demencia (CDR &gt; 0)</span></div>
-  </div>
-  <div class="cdr" data-s="1">
-    <p class="cap">Personas por nivel de demencia (CDR)</p>
-    <div id="oaBars"></div>
-  </div>
-  <p class="src">Marcus et al. (2007) · tabla clínica de OASIS-1</p>
-</section>
-
 <!-- 10 CNN: big input -> the convolution -> many filters -> architecture -->
 <section class="scene dark" id="cnn" data-tr="zoom">
-  <div class="hd"><p class="eyebrow">05 · Redes convolucionales</p><h2 class="ttl"><em>CNN</em></h2></div>
+  <div class="hd"><p class="eyebrow">04 · Redes convolucionales</p><h2 class="ttl"><em>CNN</em></h2></div>
   <div class="src-img" id="cnImg"><img src="assets/generated/dementia_md.jpg" alt="Corte de resonancia de una persona con demencia leve"><i id="cnK"></i></div>
   <p class="lbl l1">Entrada</p>
   <div class="kbox" id="cnKbox"><p>Convolución</p><div class="kern" id="cnKern"></div></div>
@@ -212,7 +178,7 @@
 
 <!-- 11 TRANSFORMER: next-word prediction, then how it is used with a CNN -->
 <section class="scene dark" id="trf" data-tr="diag">
-  <div class="hd"><p class="eyebrow">06 · Transformers</p><h2 class="ttl" id="trT">Transformer: <em>predecir la siguiente palabra</em></h2></div>
+  <div class="hd"><p class="eyebrow">05 · Transformers</p><h2 class="ttl" id="trT">Transformer: <em>predecir la siguiente palabra</em></h2></div>
   <svg class="words" id="trW" viewBox="0 0 1664 600" role="img" aria-label="Frase en la que el modelo se enfoca en las palabras anteriores para predecir la siguiente"></svg>
   <svg class="hyb" id="trH" viewBox="0 0 1664 600" role="img" aria-label="Una CNN resume la resonancia en parches; el transformer los trata como palabras, los relaciona y decide CN o AD"></svg>
   <i data-s="1" hidden></i>
@@ -220,7 +186,7 @@
 
 <!-- 12 ATENCIÓN -->
 <section class="scene dark" id="aten" data-tr="diag">
-  <div class="hd"><p class="eyebrow">06 · Mecanismos de atención</p><h2 class="ttl">Mecanismo de <em>atención</em></h2></div>
+  <div class="hd"><p class="eyebrow">05 · Mecanismos de atención</p><h2 class="ttl">Mecanismo de <em>atención</em></h2></div>
   <div class="att"><img src="assets/generated/dementia_md.jpg" alt="Corte de resonancia dividido en parches"><canvas id="atHeat" width="496" height="248"></canvas><svg id="atSvg" viewBox="0 0 496 248" preserveAspectRatio="none"></svg></div>
   <div class="anote">
     <p class="a0">La imagen se parte en <b>parches</b>. Con <b>auto-atención</b>, cada parche mira a todos los demás y decide cuáles le importan.</p>
@@ -237,7 +203,7 @@
 
 <!-- 13 MAKERS FAIR -->
 <section class="scene dark" id="makers" data-tr="circle">
-  <div class="t"><p class="eyebrow">Dónde estuvimos</p><h2 class="ttl">Makers Fair</h2><p class="lead">Hub de Emprendimiento</p></div>
+  <div class="t"><h2 class="ttl">Makers Fair</h2><p class="lead">Hub de Emprendimiento</p></div>
   <div class="ph"><img src="assets/img/makers-fair.jpg" alt="Nuestro póster “CNNs interpretables para clasificar Alzheimer” en el muro de GenoBit y BioLab en el Makers Fair"></div>
   <i data-s="1" hidden></i>
 </section>
@@ -246,21 +212,11 @@
 <section class="scene light" id="prop" data-tr="doorv">
   <div class="hd"><p class="eyebrow">Nuestra propuesta</p><h2 class="ttl">CNN + transformer <em>interpretable</em></h2></div>
   <nav class="pipe" aria-label="Siguientes pasos del proyecto">
-    <div class="pp" style="--i:0"><i>1</i><b>Profesor asesor</b><span>buscar quién nos asesore</span></div>
-    <div class="pp" style="--i:1"><i>2</i><b>Datos</b><span>estamos buscando nuevos datos</span></div>
-    <div class="pp" style="--i:2"><i>3</i><b>CNN + transformer</b><span>convolución + auto-atención</span></div>
-    <div class="pp" style="--i:3"><i>4</i><b>Mapas de atención</b><span>ver en qué se basa la decisión</span></div>
+    <div class="pp" style="--i:0"><i>1</i><b>Profesor asesor</b></div>
+    <div class="pp" style="--i:1"><i>2</i><b>Datos</b></div>
+    <div class="pp" style="--i:2"><i>3</i><b>CNN + transformer</b></div>
+    <div class="pp" style="--i:3"><i>4</i><b>Mapas de atención</b></div>
   </nav>
-  <div class="status">
-    <div class="col" data-s="1"><h3><i class="ok"></i>Lo que ya tenemos</h3><ul><li>Tema del proyecto</li><li>Introducción</li><li>Marco teórico y estado del arte (borrador)</li><li>Póster en el Makers Fair</li></ul></div>
-    <div class="col" data-s="2"><h3><i class="nx"></i>Lo que sigue</h3><ul><li>Encontrar profesor asesor</li><li>Conseguir los datos</li><li>Entrenar el modelo CNN + transformer</li><li>Generar los mapas de atención</li></ul></div>
-  </div>
-</section>
-
-<!-- 15 FIN -->
-<section class="scene dark" id="fin" data-tr="circle">
-  <div class="bye"><h2>¿Preguntas?</h2><p>Código, manuscrito, póster y esta presentación:</p><p class="mono">github.com/GenobitNeuroimaging/Neuroimaging</p></div>
-  <svg class="hx2" viewBox="0 0 1200 200" aria-hidden="true"><path id="finA" fill="none" stroke="#00706F" stroke-width="10" stroke-linecap="round"/><path id="finB" fill="none" stroke="#A9CDE5" stroke-width="10" stroke-linecap="round"/></svg>
 </section>
 
 <button id="fs" type="button" aria-label="Pantalla completa">pantalla completa</button>

@@ -156,7 +156,7 @@
   /* ---------------- 03 alzheimer: the brain shrinks while the damage spreads; the stage track follows ---------------- */
   (function () {
     var B = $('#azB'), R = [$('#azR1'), $('#azR2'), $('#azR3')], S = $$('#azS path'), fill = $('#azFill'), mk = $('#azMk');
-    var sg = [$('#azS0'), $('#azS1'), $('#azS2')], t0 = 0;
+    var sg = [$('#azS0'), $('#azS1'), $('#azS2')], mri = $$('#alz .mri img'), tag = $('#azTag'), TAGS = ['CDR 0', 'CDR 0.5', 'CDR 1'], t0 = 0;
     SH.alz = function () { t0 = 0; };
     TICK.alz = function (t) {
       if (!t0) t0 = t;
@@ -169,7 +169,8 @@
       fill.style.transform = 'scaleY(' + p.toFixed(3) + ')';
       mk.style.transform = 'translateY(' + (p * 500).toFixed(1) + 'px)';
       var k = p < .34 ? 0 : p < .67 ? 1 : 2;
-      sg.forEach(function (g, i) { g.classList.toggle('on', i === k); });
+      sg.forEach(function (g, i) { g.classList.toggle('on', i === k); mri[i].classList.toggle('on', i === k); });
+      if (tag.textContent !== TAGS[k]) tag.textContent = TAGS[k];
     };
   })();
 
@@ -190,26 +191,6 @@
         el.classList.toggle('on', on); L[i].classList.toggle('on', on);
         if (on && el._m) setFrame(el, pingpong(e - AT[i] + 5, 4, el._m.frames));      /* 4 frames/s: slow sweep */
       });
-    };
-  })();
-
-  /* ---------------- 07 atrofia: real scans at the same brain level, one per CDR level ---------------- */
-  (function () {
-    var lv = [['nd', 'Sano', 'CDR 0'], ['vmd', 'Muy leve', 'CDR 0.5'], ['md', 'Leve', 'CDR 1'], ['mod', 'Moderada', 'CDR 2']];
-    var wrap = $('#dmThumbs'), big = $('#dmImg'), th = [];
-    lv.forEach(function (l, i) {
-      var b = document.createElement('button');
-      b.type = 'button'; b.className = 'th';
-      b.innerHTML = '<img src="' + G + 'dementia_' + l[0] + '.jpg" alt=""><span><b>' + l[1] + '</b>' + l[2] + '</span>';
-      b.addEventListener('click', function () { if (window.DECK) DECK.setStep(i); });
-      wrap.appendChild(b); th.push(b);
-    });
-    SH.atrofia = function (sc, step) {
-      var k = Math.min(step, 3), l = lv[k];
-      th.forEach(function (b, i) { b.classList.toggle('on', i === k); });
-      big.style.opacity = 0;
-      setTimeout(function () { big.src = G + 'dementia_' + l[0] + '.jpg'; big.style.opacity = 1; }, 180);
-      set('dmLbl', l[1] + ' · ' + l[2]);
     };
   })();
 
@@ -384,20 +365,6 @@
       var ai = Math.floor(t / 1.5) % AUG.length;
       if (ai !== lastAug) { lastAug = ai; aug.style.transform = AUG[ai][1]; aug.style.filter = AUG[ai][2]; augL.textContent = AUG[ai][0]; }
     };
-  })();
-
-  /* ---------------- 09 oasis: people per CDR level ---------------- */
-  (function () {
-    var O = (D.oasis1 && D.oasis1.by_class) || { nd: 316, vmd: 70, md: 28, mod: 2 };
-    var L = [['nd', 'Sano', 'CDR 0', '#00706F'], ['vmd', 'Muy leve', 'CDR 0.5', '#A9CDE5'], ['md', 'Leve', 'CDR 1', '#7D7ECA'], ['mod', 'Moderada', 'CDR 2', '#FAFAFA']];
-    var mx = Math.max.apply(null, L.map(function (l) { return O[l[0]]; })), box = $('#oaBars'), fills = [];
-    L.forEach(function (l) {
-      var r = document.createElement('div'); r.className = 'br';
-      r.innerHTML = '<span>' + l[1] + '<small>' + l[2] + '</small></span><div class="tr"><i style="background:' + l[3] + '"></i></div><b>' + O[l[0]] + '</b>';
-      box.appendChild(r); fills.push([$('i', r), Math.max(1.2, O[l[0]] / mx * 100)]);
-    });
-    SH.oasis = function (sc, step) { fills.forEach(function (f, i) { f[0].style.transitionDelay = (i * .15) + 's'; f[0].style.transform = 'scaleX(' + (step >= 1 ? f[1] / 100 : 0) + ')'; }); };
-    SH.oasis.reset = function () { fills.forEach(function (f) { f[0].style.transform = 'scaleX(0)'; }); };
   })();
 
   /* ---------------- 10 cnn: 0 big input + kernel, 1 the kernel sweeps, 2 many filters, 3 architecture ---------------- */
@@ -599,17 +566,6 @@
     }
     g.putImageData(im, 0, 0);
   })();
-
-  /* ---------------- 15 fin: helix ---------------- */
-  TICK.fin = function (t) {
-    var A = '', B = '', x;
-    for (x = 0; x <= 1200; x += 10) {
-      var y = 60 * Math.sin(x / 300 * 2 * Math.PI + t * 1.2);
-      A += (x ? 'L' : 'M') + x + ' ' + (100 + y).toFixed(1);
-      B += (x ? 'L' : 'M') + x + ' ' + (100 - y).toFixed(1);
-    }
-    $('#finA').setAttribute('d', A); $('#finB').setAttribute('d', B);
-  };
 
 
   /* ================= engine ================= */

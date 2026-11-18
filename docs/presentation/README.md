@@ -1,8 +1,8 @@
-# Presentación de avances · GenoBit Neuroimaging
+# CNNs interpretables para clasificar Alzheimer en resonancia magnética estructural
 
-Presentación de ~15 minutos para la comunidad de GenoBit: qué es el Alzheimer, cómo se toman las neuroimágenes,
-el estado del arte en predicción y en procesamiento de datos, OASIS-1, CNNs, transformers y atención, el Makers Fair
-y en qué va el proyecto.
+Presentación de avances (~15 minutos) para la comunidad de GenoBit: qué es el Alzheimer y cómo se ve en la RM, cómo
+se toman las neuroimágenes, el estado del arte en predicción y en procesamiento de datos, CNNs, transformers y
+atención, el Makers Fair y los siguientes pasos.
 
 El motor de diapositivas, la animación de la portada y las imágenes de OASIS vienen de la presentación de
 relanzamiento ([Mmateo101/presentation-neuroimaging](https://github.com/Mmateo101/presentation-neuroimaging)).
@@ -22,7 +22,7 @@ ir a la diapositiva N.
 
 | Archivo | Qué es |
 |---|---|
-| `index.html` | Las 15 diapositivas |
+| `index.html` | Las 11 diapositivas |
 | `assets/css/base.css` | Escenario, transiciones y portada (de la presentación de relanzamiento) |
 | `assets/css/deck.css` | Estilos de cada diapositiva |
 | `assets/js/cover-brain.js` | Cerebro de líneas de la portada |
