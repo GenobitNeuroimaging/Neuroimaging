@@ -1,0 +1,35 @@
+% =====================================================================
+% main.tex — entry point of the methodology document.
+% Build: `make methodology` from the repo root, or `latexmk` from
+% docs/methodology/ (output in build/main.pdf). Write content in
+% sections/, not here.
+% Companion to docs/manuscript/: it documents in detail how the data is
+% handled and how the models are built, so the manuscript can stay short.
+% =====================================================================
+\documentclass[11pt]{article}
+
+\input{preamble}
+
+% TODO: define authorship and affiliations with the team.
+\title{Methodology: Data Handling and Architecture for Interpretable CNN-Based Alzheimer's Disease Classification from Structural MRI}
+\author{%
+  Author One\thanks{Corresponding author: \texttt{email@example.org}} \\
+  Affiliation \\
+  \and
+  Author Two \\
+  Affiliation \\
+}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\input{sections/abstract}
+
+\input{sections/data_handling}
+\input{sections/architecture}
+
+\printbibliography
+
+\end{document}

@@ -2,6 +2,7 @@
 #   make pdf     build docs/manuscript/$(VERSION)/build/main.pdf
 #   make watch   rebuild on every save
 #   make clean   remove docs/manuscript/$(VERSION)/build/
+#   make methodology   build docs/methodology/build/main.pdf
 #
 # VERSION selects the manuscript version (default v1): `make pdf VERSION=v2`.
 #
@@ -30,7 +31,11 @@ else
   VIEW :=
 endif
 
-.PHONY: pdf watch clean image
+.PHONY: pdf watch clean image methodology
+
+# Methodology document (docs/methodology/): same build, different folder.
+methodology:
+	$(MAKE) pdf MANUSCRIPT=docs/methodology
 
 pdf: $(DEPS)
 	$(RUN) latexmk
