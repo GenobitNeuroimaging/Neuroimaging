@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>GenoBit Neuroimaging · Avances</title>
-<meta name="description" content="Avances del proyecto Neuroimaging de GenoBit: Alzheimer, neuroimágenes, estado del arte, OASIS-1, CNNs y mecanismos de atención.">
+<meta name="description" content="Avances del proyecto Neuroimaging de GenoBit: Alzheimer, neuroimágenes, estado del arte, OASIS-1, CNNs, transformers y mecanismos de atención.">
 <meta name="theme-color" content="#1F1F1F">
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,114 +40,98 @@
   <svg class="road" viewBox="0 0 1664 200" aria-hidden="true"><path class="rd-bg" d="M40 100 H1624"/><path class="rd" pathLength="1" d="M40 100 H1624"/></svg>
   <ol class="stops">
     <li style="--i:0"><b>01</b><span>Alzheimer</span><em>qué es y cómo avanza</em></li>
-    <li style="--i:1"><b>02</b><span>Neuroimágenes</span><em>qué información traen</em></li>
-    <li style="--i:2"><b>03</b><span>Estado del arte</span><em>qué modelos se han usado</em></li>
-    <li style="--i:3"><b>04</b><span>OASIS-1</span><em>nuestra base de datos</em></li>
-    <li style="--i:4"><b>05</b><span>CNNs</span><em>cómo “ve” una red</em></li>
-    <li style="--i:5"><b>06</b><span>Atención</span><em>en qué se fija el modelo</em></li>
+    <li style="--i:1"><b>02</b><span>Neuroimágenes</span><em>cómo se toman</em></li>
+    <li style="--i:2"><b>03</b><span>Estado del arte</span><em>predicción y procesamiento</em></li>
+    <li style="--i:3"><b>04</b><span>Datos</span><em>OASIS-1</em></li>
+    <li style="--i:4"><b>05</b><span>CNNs</span><em>la convolución</em></li>
+    <li style="--i:5"><b>06</b><span>Transformers</span><em>y la atención</em></li>
   </ol>
 </section>
 
-<!-- 03 ALZHEIMER -->
+<!-- 03 ALZHEIMER: one looping animation, brain + stages -->
 <section class="scene dark" id="alz" data-tr="circle">
   <div class="hd"><p class="eyebrow">01 · Contexto</p><h2 class="ttl">¿Qué es el <em>Alzheimer</em>?</h2></div>
-  <p class="lead intro">Una enfermedad neurodegenerativa progresiva y sin cura. Tratarla temprano puede frenar su avance.</p>
-  <svg class="neuron" viewBox="0 0 760 560" role="img" aria-label="Esquema de una neurona: aparecen placas de beta-amiloide alrededor, ovillos de tau dentro y finalmente la neurona pierde sus ramas">
-    <g class="dend">
-      <path pathLength="1" d="M250 280 C200 240 170 200 120 150"/><path pathLength="1" d="M170 210 C150 190 120 190 90 200"/>
-      <path pathLength="1" d="M240 250 C230 190 240 140 220 80"/><path pathLength="1" d="M235 170 C210 150 190 120 175 95"/>
-      <path pathLength="1" d="M250 320 C200 360 160 400 110 430"/><path pathLength="1" d="M180 380 C150 370 120 380 85 360"/>
-      <path pathLength="1" d="M270 330 C260 390 250 440 270 500"/>
-      <path pathLength="1" d="M340 290 C420 290 500 280 590 270"/>
-      <path pathLength="1" d="M590 270 C620 240 640 220 670 210"/><path pathLength="1" d="M590 270 C625 275 650 280 690 290"/><path pathLength="1" d="M590 270 C615 300 630 330 655 355"/>
+  <p class="lead intro">Una enfermedad neurodegenerativa y sin cura: el cerebro pierde neuronas y se encoge, de adentro hacia afuera.</p>
+  <svg class="brain" viewBox="0 0 800 560" role="img" aria-label="Esquema lateral del cerebro que se encoge mientras se iluminan, en orden, la corteza entorrinal, el hipocampo y la neocorteza">
+    <g id="azB">
+      <path class="cx" d="M150 300 C120 200 200 90 340 70 C470 50 610 80 680 170 C730 235 720 320 670 360 C640 385 600 380 570 395 C540 410 520 440 470 440 C420 440 400 420 360 425 C300 432 260 440 220 410 C180 380 165 340 150 300 Z"/>
+      <path class="rg r3" id="azR3" d="M150 300 C120 200 200 90 340 70 C470 50 610 80 680 170 C730 235 720 320 670 360 C640 385 600 380 570 395 C540 410 520 440 470 440 C420 440 400 420 360 425 C300 432 260 440 220 410 C180 380 165 340 150 300 Z"/>
+      <g class="sulc" id="azS"><path d="M330 80 C350 150 330 210 360 270"/><path d="M230 160 C280 180 300 230 290 290"/><path d="M470 70 C460 140 490 190 470 250"/><path d="M590 110 C560 170 590 220 560 280"/><path d="M200 330 C280 330 360 340 470 320"/><path d="M650 220 C610 250 620 300 590 330"/></g>
+      <path class="stem" d="M520 405 C515 450 505 500 500 545 L540 545 C545 500 555 450 560 400 Z"/>
+      <ellipse class="cbl" cx="610" cy="430" rx="85" ry="52"/>
+      <ellipse class="rg r1" id="azR1" cx="285" cy="398" rx="44" ry="22"/>
+      <ellipse class="rg r2" id="azR2" cx="390" cy="380" rx="72" ry="20" transform="rotate(-8 390 380)"/>
     </g>
-    <g class="syn"><circle cx="672" cy="208" r="11"/><circle cx="692" cy="290" r="11"/><circle cx="657" cy="357" r="11"/></g>
-    <circle class="soma" cx="290" cy="290" r="62"/>
-    <circle class="nuc" cx="290" cy="290" r="20"/>
-    <g class="plq">
-      <g transform="translate(420 170)"><g><circle r="16"/><circle cx="20" cy="8" r="10"/><circle cx="-8" cy="18" r="9"/><circle cx="10" cy="-16" r="7"/></g></g>
-      <g transform="translate(140 300)"><g><circle r="14"/><circle cx="-16" cy="-8" r="9"/><circle cx="6" cy="16" r="8"/></g></g>
-      <g transform="translate(470 400)"><g><circle r="18"/><circle cx="22" cy="-6" r="10"/><circle cx="-6" cy="-20" r="8"/><circle cx="-18" cy="10" r="7"/></g></g>
-      <g transform="translate(330 470)"><g><circle r="12"/><circle cx="16" cy="6" r="8"/></g></g>
-    </g>
-    <g class="tng"><path d="M262 268 q8 -10 16 0 t16 0 t16 0"/><path d="M258 292 q8 10 16 0 t16 0 t16 0 t8 0"/><path d="M266 314 q8 -10 16 0 t16 0 t12 0"/></g>
   </svg>
-  <div class="steps3">
-    <div class="st" data-s="1"><i class="dot a"></i><div><b>Beta-amiloide</b><span>se acumula en <em>placas</em> fuera de las neuronas</span></div></div>
-    <div class="st" data-s="2"><i class="dot t"></i><div><b>Proteína tau</b><span>forma <em>ovillos</em> dentro de las neuronas</span></div></div>
-    <div class="st" data-s="3"><i class="dot n"></i><div><b>Neurodegeneración</b><span>se pierden sinapsis y neuronas: el cerebro se <em>encoge</em></span></div></div>
-  </div>
-  <p class="src">Jack et al. (2018) · Nibila y Sivagami (2026)</p>
-</section>
-
-<!-- 04 BRAAK + CONTINUO -->
-<section class="scene light" id="braak" data-tr="diag">
-  <div class="hd"><p class="eyebrow">01 · Contexto</p><h2 class="ttl">No avanza igual en <em>todo el cerebro</em></h2></div>
-  <svg class="brain" viewBox="0 0 800 560" role="img" aria-label="Esquema lateral del cerebro: la región entorrinal, luego el hipocampo y después la neocorteza se iluminan en orden">
-    <path class="cx" d="M150 300 C120 200 200 90 340 70 C470 50 610 80 680 170 C730 235 720 320 670 360 C640 385 600 380 570 395 C540 410 520 440 470 440 C420 440 400 420 360 425 C300 432 260 440 220 410 C180 380 165 340 150 300 Z"/>
-    <g class="sulc"><path d="M330 80 C350 150 330 210 360 270"/><path d="M230 160 C280 180 300 230 290 290"/><path d="M470 70 C460 140 490 190 470 250"/><path d="M590 110 C560 170 590 220 560 280"/><path d="M200 330 C280 330 360 340 470 320"/><path d="M650 220 C610 250 620 300 590 330"/></g>
-    <path class="stem" d="M520 405 C515 450 505 500 500 545 L540 545 C545 500 555 450 560 400 Z"/>
-    <ellipse class="cbl" cx="610" cy="430" rx="85" ry="52"/>
-    <g class="sulc"><path d="M540 420 C580 405 640 405 680 420"/><path d="M545 440 C590 428 640 430 685 445"/></g>
-    <ellipse class="rg r1" cx="285" cy="398" rx="44" ry="22"/>
-    <ellipse class="rg r2" cx="390" cy="380" rx="72" ry="20" transform="rotate(-8 390 380)"/>
-    <path class="rg r3" d="M150 300 C120 200 200 90 340 70 C470 50 610 80 680 170 C730 235 720 320 670 360 C640 385 600 380 570 395 C540 410 520 440 470 440 C420 440 400 420 360 425 C300 432 260 440 220 410 C180 380 165 340 150 300 Z"/>
-  </svg>
-  <ol class="stg">
-    <li data-s="1"><b>1</b><div><span>Región entorrinal</span><em>los ovillos de tau aparecen primero aquí</em></div></li>
-    <li data-s="2"><b>2</b><div><span>Hipocampo</span><em>memoria: el síntoma más conocido</em></div></li>
-    <li data-s="3"><b>3</b><div><span>Neocorteza</span><em>solo después se extiende al resto</em></div></li>
-  </ol>
-  <div class="cont" data-s="4">
-    <p class="cap">Las etiquetas que usan los estudios</p>
-    <div class="bar"><div><b>CN</b><span>cognitivamente normal</span></div><div><b>MCI</b><span>deterioro cognitivo leve</span></div><div><b>AD</b><span>demencia por Alzheimer</span></div></div>
+  <div class="track"><i class="ln"></i><i class="fill" id="azFill"></i><i class="mk" id="azMk"></i>
+    <div class="sg" id="azS0"><b>CN</b><span>Cognitivamente normal</span><em>los cambios empiezan en la <u>corteza entorrinal</u></em></div>
+    <div class="sg" id="azS1"><b>MCI</b><span>Deterioro cognitivo leve</span><em>llegan al <u>hipocampo</u>: falla la memoria</em></div>
+    <div class="sg" id="azS2"><b>AD</b><span>Demencia por Alzheimer</span><em>se extienden a la <u>neocorteza</u></em></div>
   </div>
   <p class="src">Esquema · Braak y Braak (1991) · Jack et al. (2018)</p>
 </section>
 
-<!-- 05 MODALIDADES -->
+<!-- 04 MODALIDADES: what each image shows and the machine that takes it -->
 <section class="scene dark" id="modal" data-tr="zoom">
   <div class="hd"><p class="eyebrow">02 · Neuroimágenes</p><h2 class="ttl">Cada imagen trae <em>otra información</em></h2></div>
   <div class="mods">
     <article class="md" data-s="1">
       <div class="pic"><img src="assets/generated/dementia_nd.jpg" alt="Corte de resonancia magnética estructural ponderada en T1"></div>
       <p class="k">RM estructural · T1</p><h3>Anatomía</h3>
-      <p>Muestra la forma del cerebro: la <b>atrofia</b> se ve como tejido que se encoge y espacios de líquido que crecen.</p>
-      <p class="tag">sin radiación</p>
+      <div class="tool"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="8" y="10" width="64" height="52" rx="16" class="hs"/><circle cx="40" cy="36" r="14" class="br"/><rect x="2" y="64" width="76" height="8" rx="4" class="bd"/></svg>
+        <div><b>Resonador magnético</b><span>imán de 1.5 a 3 teslas + ondas de radio</span></div></div>
     </article>
     <article class="md" data-s="2">
       <div class="pic pet"><img src="assets/generated/dementia_nd.jpg" alt=""><i></i></div>
       <p class="k">PET</p><h3>Química</h3>
-      <p>Un trazador radiactivo marca el <b>metabolismo</b> (FDG), las <b>placas de amiloide</b> o los <b>ovillos de tau</b>.</p>
-      <p class="tag">trazador radiactivo</p>
+      <div class="tool"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="12" y="14" width="56" height="46" rx="23" class="hs"/><circle cx="40" cy="37" r="13" class="br"/><rect x="2" y="64" width="76" height="8" rx="4" class="bd"/><path d="M60 4 l14 14 M64 8 l-12 12 l-6 0 l0 -6 z" class="sy"/></svg>
+        <div><b>Tomógrafo PET</b><span>+ trazador radiactivo inyectado: FDG, amiloide o tau</span></div></div>
     </article>
     <article class="md" data-s="3">
       <div class="pic fmri"><img src="assets/generated/dementia_nd.jpg" alt=""><i></i></div>
       <p class="k">RM funcional</p><h3>Actividad</h3>
-      <p>Mide cambios en el flujo de sangre para ver qué regiones se <b>activan</b> con el tiempo (4D).</p>
-      <p class="tag">volumen en el tiempo</p>
+      <div class="tool"><svg viewBox="0 0 80 80" aria-hidden="true"><rect x="8" y="10" width="64" height="52" rx="16" class="hs"/><circle cx="40" cy="36" r="14" class="br"/><rect x="2" y="64" width="76" height="8" rx="4" class="bd"/><path d="M28 36 h5 l3 -7 l4 14 l3 -7 h9" class="sy"/></svg>
+        <div><b>El mismo resonador</b><span>muchas imágenes seguidas mientras la persona descansa o hace una tarea</span></div></div>
     </article>
   </div>
-  <p class="ours" data-s="4">Nosotros trabajamos con <b>RM estructural T1</b>: es la más común, barata y sin radiación.</p>
   <p class="src">Colores de PET y RM funcional: ilustrativos</p>
 </section>
 
-<!-- 06 CÓMO VIENE UNA RM -->
+<!-- 05 CÓMO SE TOMA UNA RM: a person slides into the scanner, the planes appear -->
 <section class="scene dark" id="rm" data-tr="circle">
-  <div class="hd"><p class="eyebrow">02 · Neuroimágenes</p><h2 class="ttl">¿Cómo viene una <em>resonancia</em>?</h2></div>
-  <div class="txt">
-    <div class="li" data-s="1"><b>Un volumen 3D</b><span>una cuadrícula de <em>vóxeles</em> (pixeles en 3D), cada uno con una intensidad</span></div>
-    <div class="li" data-s="2"><b>Se mira en cortes</b><span>en tres planos: axial, coronal y sagital</span></div>
-    <div class="li" data-s="3"><b>En T1 cada tejido tiene su tono</b><span><i class="sw wm"></i>materia blanca <i class="sw gm"></i>materia gris <i class="sw csf"></i>líquido</span></div>
-  </div>
-  <div class="cube" aria-hidden="true"><div class="cb"></div></div>
+  <div class="hd"><p class="eyebrow">02 · Neuroimágenes</p><h2 class="ttl">¿Cómo se toma una <em>resonancia</em>?</h2></div>
+  <svg class="scan" viewBox="0 0 900 560" role="img" aria-label="Una persona acostada entra en el resonador; un plano recorre su cabeza mientras aparecen los cortes axial, coronal y sagital">
+    <defs>
+      <linearGradient id="rmBeam" x1="0" x2="1"><stop offset="0" stop-color="#A9CDE5" stop-opacity="0"/><stop offset=".5" stop-color="#A9CDE5" stop-opacity=".9"/><stop offset="1" stop-color="#A9CDE5" stop-opacity="0"/></linearGradient>
+      <clipPath id="rmBore"><rect x="430" y="232" width="300" height="96"/></clipPath>
+    </defs>
+    <line class="floor" x1="20" y1="500" x2="880" y2="500"/>
+    <rect class="ped" x="250" y="350" width="170" height="150" rx="14"/>
+    <g id="rmBed">
+      <rect class="tbl" x="40" y="330" width="400" height="16" rx="8"/>
+      <g class="pt">
+        <rect class="body" x="90" y="292" width="250" height="40" rx="20"/>
+        <rect class="leg" x="40" y="300" width="70" height="30" rx="14"/>
+        <circle class="head" cx="376" cy="304" r="27"/>
+        <path class="arm" d="M150 300 Q 230 286 300 300"/>
+      </g>
+    </g>
+    <rect class="bore" x="430" y="232" width="300" height="96"/>
+    <g clip-path="url(#rmBore)"><rect id="rmScan" x="-14" y="232" width="28" height="96" fill="url(#rmBeam)"/></g>
+    <path class="hs" d="M470 90 H650 Q730 90 730 170 V232 H430 V170 Q430 90 470 90 Z"/>
+    <path class="hs" d="M430 328 H730 V420 Q730 470 680 470 H480 Q430 470 430 420 Z"/>
+    <ellipse class="rim" cx="430" cy="280" rx="16" ry="48"/><ellipse class="rim back" cx="730" cy="280" rx="12" ry="48"/>
+    <g id="rmField"><path d="M480 130 Q580 105 680 130"/><path d="M480 160 Q580 140 680 160"/><path d="M480 400 Q580 425 680 400"/><path d="M480 370 Q580 390 680 370"/></g>
+    <circle class="led" id="rmLed" cx="700" cy="120" r="8"/>
+    <text class="lb" x="580" y="530" text-anchor="middle">resonador · imán de 1.5 a 3 T</text>
+  </svg>
   <div class="view v-ax sprite" data-sprite="plane.axial"></div>
   <div class="view v-co sprite" data-sprite="plane.coronal"></div>
   <div class="view v-sa sprite" data-sprite="plane.sagittal"></div>
-  <span class="vl" style="left:976px;top:870px">axial · desde arriba</span><span class="vl" style="left:1490px;top:494px">coronal · de frente</span><span class="vl" style="left:1490px;top:870px">sagital · de lado</span>
+  <span class="vl l-ax">axial · desde arriba</span><span class="vl l-co">coronal · de frente</span><span class="vl l-sa">sagital · de lado</span>
 </section>
 
-<!-- 07 ATROFIA -->
+<!-- 06 ATROFIA -->
 <section class="scene light" id="atrofia" data-tr="door">
   <div class="hd"><p class="eyebrow">02 · Neuroimágenes</p><h2 class="ttl">Cómo se ve el Alzheimer <em>en la RM</em></h2></div>
   <div class="big2"><img id="dmImg" src="assets/generated/dementia_nd.jpg" alt="Resonancia al nivel de los ventrículos"><b id="dmLbl">Sano</b></div>
@@ -156,55 +140,49 @@
   <i data-s="1" hidden></i><i data-s="2" hidden></i><i data-s="3" hidden></i>
 </section>
 
-<!-- 08 ESTADO DEL ARTE: six model families, one study each (Nibila y Sivagami, 2026) -->
-<section class="scene light" id="sota" data-tr="rise">
-  <div class="hd"><p class="eyebrow">03 · Estado del arte</p><h2 class="ttl">¿Qué modelos <em>se han usado</em>?</h2></div>
+<!-- 07 ESTADO DEL ARTE · PREDICCIÓN: six model families, one study each (Nibila y Sivagami, 2026) -->
+<section class="scene light sotaG" id="sota" data-tr="rise">
+  <div class="hd"><p class="eyebrow">03 · Estado del arte</p><h2 class="ttl">Estado del arte en <em>predicción</em></h2></div>
   <div class="cards">
     <article class="mc"><svg class="an" id="anSvm" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
-      <p class="k">ML clásico</p><h3>Máquina de soporte vectorial</h3>
-      <p class="d">Traza la frontera que separa las clases con el mayor margen.</p>
-      <p class="pp"><b>Richhariya et al. (2020)</b><br>RM estructural · ADNI · 150 personas · CN vs AD</p><span class="acc">90 %</span></div></article>
+      <h3>Máquina de soporte vectorial</h3><p class="pp"><b>Richhariya et al. (2020)</b><br>RM estructural · ADNI · CN vs AD</p><span class="acc">90 %</span></div></article>
     <article class="mc"><svg class="an" id="anRf" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
-      <p class="k">ML clásico</p><h3>Bosque aleatorio</h3>
-      <p class="d">Muchos árboles de decisión hacen preguntas a los datos y votan.</p>
-      <p class="pp"><b>Parameswari et al. (2022)</b><br>RM · OASIS · 416 personas · CN vs AD</p><span class="acc">93.6 %</span></div></article>
+      <h3>Bosque aleatorio</h3><p class="pp"><b>Parameswari et al. (2022)</b><br>RM · OASIS · CN vs AD</p><span class="acc">93.6 %</span></div></article>
     <article class="mc"><svg class="an" id="anKnn" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
-      <p class="k">ML clásico</p><h3>k vecinos más cercanos</h3>
-      <p class="d">Un caso nuevo toma la clase de los ejemplos más parecidos.</p>
-      <p class="pp"><b>Elgammal et al. (2022)</b><br>RM · ADNI · 750 personas · CN / MCI / AD</p><span class="acc">99 %</span></div></article>
+      <h3>k vecinos más cercanos</h3><p class="pp"><b>Elgammal et al. (2022)</b><br>RM · ADNI · CN / MCI / AD</p><span class="acc">99 %</span></div></article>
     <article class="mc" data-s="1"><svg class="an" id="anDnn" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
-      <p class="k">Deep learning</p><h3>Red neuronal profunda</h3>
-      <p class="d">Capas de neuronas conectadas transforman los datos hasta decidir.</p>
-      <p class="pp"><b>Soundarya et al. (2021)</b><br>RM estructural · OASIS · 416 personas · CN vs AD</p><span class="acc">92 %</span></div></article>
+      <h3>Red neuronal profunda</h3><p class="pp"><b>Soundarya et al. (2021)</b><br>RM estructural · OASIS · CN vs AD</p><span class="acc">92 %</span></div></article>
     <article class="mc" data-s="1"><svg class="an" id="anCnn" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
-      <p class="k">Deep learning</p><h3>Red convolucional</h3>
-      <p class="d">Filtros que recorren la imagen y aprenden sus patrones solos.</p>
-      <p class="pp"><b>Helaly et al. (2022)</b><br>RM 3D · ADNI · 300 personas · CN vs AD</p><span class="acc">97.4 %</span></div></article>
+      <h3>Red convolucional</h3><p class="pp"><b>Helaly et al. (2022)</b><br>RM 3D · ADNI · CN vs AD</p><span class="acc">97.4 %</span></div></article>
     <article class="mc" data-s="1"><svg class="an" id="anLstm" viewBox="0 0 200 200" aria-hidden="true"></svg><div class="tx">
-      <p class="k">Deep learning</p><h3>Red recurrente (LSTM)</h3>
-      <p class="d">Lee una secuencia paso a paso y recuerda lo anterior.</p>
-      <p class="pp"><b>Hong et al. (2019)</b><br>RM · ADNI · 1,105 personas · MCI vs AD</p><span class="acc">93 %</span></div></article>
+      <h3>Red recurrente (LSTM)</h3><p class="pp"><b>Hong et al. (2019)</b><br>RM · ADNI · MCI vs AD</p><span class="acc">93 %</span></div></article>
   </div>
-  <p class="warn" data-s="2">De los 84 estudios revisados, lo que pasa de 95 % suele tener <b>pocos datos</b>, <b>clases desbalanceadas</b> o <b>prueba traslapada</b> con el entrenamiento.</p>
   <p class="src">Nibila y Sivagami (2026), Front. Artif. Intell. · Helaly et al.: valor del artículo original</p>
 </section>
 
-<!-- 09 FUGA -->
-<section class="scene dark" id="fuga" data-tr="flip">
-  <div class="hd"><p class="eyebrow">03 · Estado del arte</p><h2 class="ttl">El error más común: <em>fuga de datos</em></h2></div>
-  <div class="bins"><div class="bn tr"><span>Entrenamiento</span></div><div class="bn te"><span>Prueba</span></div></div>
-  <div class="tiles" id="fgTiles"></div>
-  <div class="fmsg">
-    <p class="f0">Cada persona aporta <b>muchos cortes</b> de su resonancia.</p>
-    <p class="f1">Si se reparten <b>al azar por imagen</b>, la misma persona queda en los dos lados: la red reconoce a la persona, no la enfermedad.</p>
-    <p class="f2">Separando <b>por persona</b>, la prueba es con gente que la red nunca vio. Así lo vamos a hacer.</p>
+<!-- 08 ESTADO DEL ARTE · PROCESAMIENTO: six preprocessing steps on real OASIS images -->
+<section class="scene light sotaG" id="proc" data-tr="rise">
+  <div class="hd"><p class="eyebrow">03 · Estado del arte</p><h2 class="ttl">Estado del arte en <em>procesamiento de datos</em></h2></div>
+  <div class="cards">
+    <article class="mc"><div class="an im" id="pcBias"><img src="assets/generated/bias_corrupt.png" alt=""><div class="wp"><img src="assets/generated/bias_corrected.png" alt=""></div><i class="hd2"></i></div><div class="tx">
+      <h3>Corrección de campo de sesgo</h3><p class="pp"><b>Tustison et al. (2010)</b><br>N4ITK: empareja el brillo del escáner</p></div></article>
+    <article class="mc"><div class="an im" id="pcSkull"><img src="assets/generated/skull_layer_brain.png" alt=""><img class="sk" src="assets/generated/skull_layer_skull.png" alt=""></div><div class="tx">
+      <h3>Extracción del cráneo</h3><p class="pp"><b>Smith (2002)</b><br>BET: deja solo el cerebro</p></div></article>
+    <article class="mc"><div class="an im" id="pcReg"><svg class="tpl" viewBox="0 0 176 208" aria-hidden="true"><ellipse cx="88" cy="106" rx="66" ry="84"/></svg><img class="mv" src="assets/generated/seg_brain.png" alt=""></div><div class="tx">
+      <h3>Registro a una plantilla</h3><p class="pp"><b>Fonov et al. (2011)</b><br>MNI152: todos en el mismo espacio</p></div></article>
+    <article class="mc" data-s="1"><div class="an im" id="pcSeg"><img src="assets/generated/seg_brain.png" alt=""><img class="t" src="assets/generated/seg_csf.png" alt=""><img class="t" src="assets/generated/seg_gm.png" alt=""><img class="t" src="assets/generated/seg_wm.png" alt=""><span class="tg" id="pcSegL">líquido</span></div><div class="tx">
+      <h3>Segmentación de tejidos</h3><p class="pp"><b>Fischl (2012)</b><br>FreeSurfer: materia gris, blanca y líquido</p></div></article>
+    <article class="mc" data-s="1"><div class="an im" id="pcEnt"><div class="sprite" data-sprite="entropy"></div><div class="mtr"><i id="pcEntBar"></i></div></div><div class="tx">
+      <h3>Selección de cortes por entropía</h3><p class="pp"><b>Hon y Khan (2017)</b><br>quedarse con los cortes con más información</p></div></article>
+    <article class="mc" data-s="1"><div class="an im" id="pcAug"><img id="pcAugI" src="assets/generated/dementia_md.jpg" alt=""><span class="tg" id="pcAugL">original</span></div><div class="tx">
+      <h3>Aumento de datos</h3><p class="pp"><b>Shorten y Khoshgoftaar (2019)</b><br>rotar, voltear y escalar para tener más ejemplos</p></div></article>
   </div>
-  <i data-s="1" hidden></i><i data-s="2" hidden></i>
+  <p class="src">Imágenes reales de OASIS-1</p>
 </section>
 
-<!-- 10 OASIS -->
+<!-- 09 OASIS -->
 <section class="scene dark" id="oasis" data-tr="circle">
-  <div class="t"><p class="eyebrow">04 · Nuestra base de datos</p><h2 class="ttl">OASIS-1</h2><p class="lead">Open Access Series of Imaging Studies · pública y transversal</p></div>
+  <div class="t"><p class="eyebrow">04 · Datos</p><h2 class="ttl">OASIS-1</h2><p class="lead">Open Access Series of Imaging Studies · pública y transversal</p></div>
   <div class="grid">
     <div><b>416</b><span>personas</span></div>
     <div><b>18–96</b><span>años</span></div>
@@ -218,41 +196,31 @@
   <p class="src">Marcus et al. (2007) · tabla clínica de OASIS-1</p>
 </section>
 
-<!-- 11 LO QUE APRENDIMOS DE LOS DATOS -->
-<section class="scene light" id="datos" data-tr="corner">
-  <div class="hd"><p class="eyebrow">04 · Avances</p><h2 class="ttl">Lo que aprendimos <em>de los datos</em></h2></div>
-  <div class="facts">
-    <div class="fc" data-s="1"><b><span data-count="86437">0</span></b><span class="u">imágenes</span><p>…pero solo <b>347 personas</b>. Contar imágenes engaña.</p></div>
-    <div class="fc" data-s="2"><b><span data-count="2">0</span></b><span class="u">personas</span><p>con demencia moderada. No alcanza para una clase propia.</p></div>
-    <div class="fc" data-s="3"><b><span data-count="147">0</span></b><span class="u">de 266</span><p>“sanos” nunca fueron evaluados: son jóvenes de 18 a 57 años.</p></div>
-    <div class="fc" data-s="4"><b>edad</b><span class="u">casi predice la clase</span><p>La edad casi separa las clases sola: hay que cuidar que la red no aprenda edad.</p></div>
-  </div>
-  <p class="src">Análisis exploratorio de OASIS-1 (versión en cortes de Kaggle)</p>
+<!-- 10 CNN: big input -> the convolution -> many filters -> architecture -->
+<section class="scene dark" id="cnn" data-tr="zoom">
+  <div class="hd"><p class="eyebrow">05 · Redes convolucionales</p><h2 class="ttl"><em>CNN</em></h2></div>
+  <div class="src-img" id="cnImg"><img src="assets/generated/dementia_md.jpg" alt="Corte de resonancia de una persona con demencia leve"><i id="cnK"></i></div>
+  <p class="lbl l1">Entrada</p>
+  <div class="kbox" id="cnKbox"><p>Convolución</p><div class="kern" id="cnKern"></div></div>
+  <div class="fmap" id="cnMapBox"><img id="cnMap" src="assets/generated/fm_vert.png" alt="Mapa de características: resultado de aplicar el filtro"><i id="cnMask"></i></div>
+  <p class="lbl l2" id="cnLbl">Mapa de características</p>
+  <div class="fan" id="cnFan"></div>
+  <p class="lbl l3">… y se repite con muchos filtros: una CNN real usa cientos</p>
+  <svg class="arch" id="cnArch" viewBox="0 0 1664 240" role="img" aria-label="Arquitectura de una CNN: entrada, convolución, pooling, convolución, pooling, capa densa y salida CN o AD"></svg>
+  <i data-s="1" hidden></i><i data-s="2" hidden></i><i data-s="3" hidden></i>
 </section>
 
-<!-- 12 CNN -->
-<section class="scene dark" id="cnn" data-tr="zoom">
-  <div class="hd"><p class="eyebrow">05 · Redes convolucionales</p><h2 class="ttl">¿Cómo “ve” una <em>CNN</em>?</h2></div>
-  <div class="src-img"><img src="assets/generated/dementia_md.jpg" alt="Corte de resonancia de una persona con demencia leve"><i id="cnK"></i></div>
-  <div class="kern" id="cnKern"></div>
-  <div class="fmap"><img id="cnMap" src="assets/generated/fm_vert.png" alt="Mapa de características: resultado de aplicar el filtro"><i id="cnMask"></i></div>
-  <p class="lbl l1">Entrada</p><p class="lbl l2" id="cnLbl">Filtro 3×3 · bordes verticales</p>
-  <div class="deep" data-s="2">
-    <div class="ly"><img src="assets/generated/fm_pool1.png" alt=""><span>capa 1<br>bordes</span></div><b class="ar">→</b>
-    <div class="ly"><img src="assets/generated/fm_pool2.png" alt=""><span>capa profunda<br>estructuras</span></div><b class="ar">→</b>
-    <div class="out"><span>CN</span><span class="on">AD</span></div>
-  </div>
-  <div class="cnote">
-    <p class="c0">Un <b>filtro</b> pequeño recorre la imagen y responde donde encuentra su patrón.</p>
-    <p class="c1">Cada filtro busca algo distinto. La red <b>aprende</b> los filtros sola.</p>
-    <p class="c2">Capa tras capa, de bordes a estructuras, hasta decidir.</p>
-  </div>
+<!-- 11 TRANSFORMER: next-word prediction, then how it is used with a CNN -->
+<section class="scene dark" id="trf" data-tr="diag">
+  <div class="hd"><p class="eyebrow">06 · Transformers</p><h2 class="ttl" id="trT">Transformer: <em>predecir la siguiente palabra</em></h2></div>
+  <svg class="words" id="trW" viewBox="0 0 1664 600" role="img" aria-label="Frase en la que el modelo se enfoca en las palabras anteriores para predecir la siguiente"></svg>
+  <svg class="hyb" id="trH" viewBox="0 0 1664 600" role="img" aria-label="Una CNN resume la resonancia en parches; el transformer los trata como palabras, los relaciona y decide CN o AD"></svg>
   <i data-s="1" hidden></i>
 </section>
 
-<!-- 13 ATENCIÓN -->
+<!-- 12 ATENCIÓN -->
 <section class="scene dark" id="aten" data-tr="diag">
-  <div class="hd"><p class="eyebrow">06 · Mecanismos de atención</p><h2 class="ttl">¿En qué se fija <em>el modelo</em>?</h2></div>
+  <div class="hd"><p class="eyebrow">06 · Mecanismos de atención</p><h2 class="ttl">Mecanismo de <em>atención</em></h2></div>
   <div class="att"><img src="assets/generated/dementia_md.jpg" alt="Corte de resonancia dividido en parches"><canvas id="atHeat" width="496" height="248"></canvas><svg id="atSvg" viewBox="0 0 496 248" preserveAspectRatio="none"></svg></div>
   <div class="anote">
     <p class="a0">La imagen se parte en <b>parches</b>. Con <b>auto-atención</b>, cada parche mira a todos los demás y decide cuáles le importan.</p>
@@ -267,19 +235,25 @@
   <i data-s="1" hidden></i><i data-s="2" hidden></i>
 </section>
 
-<!-- 14 PROPUESTA Y AVANCES -->
+<!-- 13 MAKERS FAIR -->
+<section class="scene dark" id="makers" data-tr="circle">
+  <div class="t"><p class="eyebrow">Dónde estuvimos</p><h2 class="ttl">Makers Fair</h2><p class="lead">Hub de Emprendimiento</p></div>
+  <div class="ph"><img src="assets/img/makers-fair.jpg" alt="Nuestro póster “CNNs interpretables para clasificar Alzheimer” en el muro de GenoBit y BioLab en el Makers Fair"></div>
+  <i data-s="1" hidden></i>
+</section>
+
+<!-- 14 DÓNDE VAMOS -->
 <section class="scene light" id="prop" data-tr="doorv">
-  <div class="hd"><p class="eyebrow">Nuestra propuesta</p><h2 class="ttl">CNN + transformer, <em>separando por persona</em></h2></div>
-  <nav class="pipe" aria-label="Etapas del proyecto">
-    <div class="pp done" style="--i:0"><i>1</i><b>Datos</b><span>OASIS-1, RM T1</span></div>
-    <div class="pp next" style="--i:1"><i>2</i><b>Preprocesamiento</b><span>ruido, registro, quitar cráneo</span></div>
-    <div class="pp next" style="--i:2"><i>3</i><b>División por persona</b><span>nadie en dos conjuntos</span></div>
-    <div class="pp next" style="--i:3"><i>4</i><b>CNN + transformer</b><span>convolución + auto-atención</span></div>
-    <div class="pp next" style="--i:4"><i>5</i><b>Mapas de atención</b><span>CN vs AD, interpretable</span></div>
+  <div class="hd"><p class="eyebrow">Nuestra propuesta</p><h2 class="ttl">CNN + transformer <em>interpretable</em></h2></div>
+  <nav class="pipe" aria-label="Siguientes pasos del proyecto">
+    <div class="pp" style="--i:0"><i>1</i><b>Profesor asesor</b><span>buscar quién nos asesore</span></div>
+    <div class="pp" style="--i:1"><i>2</i><b>Datos</b><span>estamos buscando nuevos datos</span></div>
+    <div class="pp" style="--i:2"><i>3</i><b>CNN + transformer</b><span>convolución + auto-atención</span></div>
+    <div class="pp" style="--i:3"><i>4</i><b>Mapas de atención</b><span>ver en qué se basa la decisión</span></div>
   </nav>
   <div class="status">
-    <div class="col" data-s="1"><h4><i class="ok"></i>Hecho</h4><ul><li>Descarga reproducible de OASIS-1</li><li>Marco teórico y estado del arte</li><li>Matriz de 16 estudios revisada</li><li>Póster del proyecto</li></ul></div>
-    <div class="col" data-s="2"><h4><i class="nx"></i>Lo que sigue</h4><ul><li>Preprocesamiento de las resonancias</li><li>Modelo base con división por persona</li><li>Modelo híbrido y mapas de atención</li></ul></div>
+    <div class="col" data-s="1"><h4><i class="ok"></i>Lo que ya tenemos</h4><ul><li>Tema del proyecto</li><li>Introducción</li><li>Marco teórico y estado del arte (borrador)</li><li>Póster en el Makers Fair</li></ul></div>
+    <div class="col" data-s="2"><h4><i class="nx"></i>Lo que sigue</h4><ul><li>Encontrar profesor asesor</li><li>Conseguir los datos</li><li>Entrenar el modelo CNN + transformer</li><li>Generar los mapas de atención</li></ul></div>
   </div>
 </section>
 

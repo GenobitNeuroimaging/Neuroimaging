@@ -18,6 +18,11 @@ KERNELS = {
     "fm_vert": np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32),   # vertical edges
     "fm_horz": np.array([[-1, -2, -1], [0, 0, 0], [1, 2, 1]], np.float32),   # horizontal edges
     "fm_dark": -np.ones((3, 3), np.float32) / 9.0,                           # dark regions (fluid)
+    "fm_diag1": np.array([[0, 1, 2], [-1, 0, 1], [-2, -1, 0]], np.float32),  # diagonal edges /
+    "fm_diag2": np.array([[2, 1, 0], [1, 0, -1], [0, -1, -2]], np.float32),  # diagonal edges \
+    "fm_lap": np.array([[0, -1, 0], [-1, 4, -1], [0, -1, 0]], np.float32),   # fine detail (Laplacian)
+    "fm_emb": np.array([[-2, -1, 0], [-1, 1, 1], [0, 1, 2]], np.float32),    # relief
+    "fm_blur": np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]], np.float32) / 16, # smoothing
 }
 
 
@@ -54,6 +59,9 @@ for name, k in KERNELS.items():
         r = np.where(brain, r, r.min())          # only fluid inside the head counts as "dark"
         maps[name] = r
         save(r, name, np.percentile(r, 50), r.max())
+    elif name in ("fm_blur", "fm_emb"):
+        maps[name] = r
+        save(r, name, np.percentile(r, 1), np.percentile(r, 99.5))
     else:
         r = np.maximum(r, 0)                     # ReLU
         maps[name] = r
