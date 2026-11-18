@@ -44,6 +44,17 @@
   }
   $$('[data-sprite]').forEach(function (el) { initSprite(el, spriteMeta(el.dataset.sprite)); });
 
+  /* ---------------- corner logo ---------------- */
+  (function () {
+    var L = $('#gbLogo'), A = '', Bp = '', x, t;
+    for (x = 70; x <= 630; x += 7) { t = (x - 70) / 280 * 2 * Math.PI; A += (x === 70 ? 'M' : 'L') + x + ' ' + (345 + 62 * Math.sin(t)).toFixed(1) + ' '; Bp += (x === 70 ? 'M' : 'L') + x + ' ' + (345 - 62 * Math.sin(t)).toFixed(1) + ' '; }
+    for (x = 84; x <= 616; x += 28) { t = (x - 70) / 280 * 2 * Math.PI; var sn = Math.sin(t); if (Math.abs(sn) >= .4) svg('line', { 'class': 'r', x1: x, x2: x, y1: (345 + 62 * sn * .82).toFixed(1), y2: (345 - 62 * sn * .82).toFixed(1) }, L); }
+    svg('path', { 'class': 'a', d: A }, L); svg('path', { 'class': 'b', d: Bp }, L);
+    [['M350 80 V250', 350, 60], ['M255 130 V262', 255, 110], ['M445 130 V262', 445, 110], ['M170 160 H190 Q204 160 204 176 V272', 150, 160], ['M530 160 H510 Q496 160 496 176 V272', 550, 160]].forEach(function (q) {
+      svg('path', { 'class': 'p', d: q[0] }, L); svg('circle', { 'class': 'c', cx: q[1], cy: q[2], r: 20 }, L);
+    });
+  })();
+
   /* ---------------- 01 portada: the brain's lines gather into a DNA helix that becomes the logo ---------------- */
   (function () {
     var sc = $('#cover'), cv = $('#dnaCv'), g = cv.getContext('2d'), pts = null, groups = [], t0 = 0, running = false;
@@ -127,7 +138,7 @@
         running = false; g.clearRect(0, 0, 1920, 1080); sc.classList.remove('dna-done', 'pins', 'word');
       }
     };
-    SH.cover.reset = function () { running = false; g.clearRect(0, 0, 1920, 1080); sc.classList.remove('dna-done', 'pins', 'word'); };
+    SH.cover.reset = function () { running = false; g.clearRect(0, 0, 1920, 1080); sc.classList.remove('dna-done', 'pins', 'word', 'exit'); };
     TICK.cover = function (t) {
       if (!running) return;
       if (!t0) t0 = t;
@@ -153,11 +164,11 @@
   function clamp(u) { return Math.max(0, Math.min(1, u)); }
   function ease(u) { return u < .5 ? 4 * u * u * u : 1 - Math.pow(-2 * u + 2, 3) / 2; }
 
-  /* ---------------- 03 alzheimer: the brain shrinks while the damage spreads; the stage track follows ---------------- */
+  /* ---------------- 02 alzheimer: the brain shrinks while the damage spreads; the matching scan lights up ---------------- */
   (function () {
-    var B = $('#azB'), R = [$('#azR1'), $('#azR2'), $('#azR3')], S = $$('#azS path'), fill = $('#azFill'), mk = $('#azMk');
-    var sg = [$('#azS0'), $('#azS1'), $('#azS2')], mri = $$('#alz .mri img'), tag = $('#azTag'), TAGS = ['CDR 0', 'CDR 0.5', 'CDR 1'], t0 = 0;
-    SH.alz = function () { t0 = 0; };
+    var B = $('#azB'), R = [$('#azR1'), $('#azR2'), $('#azR3')], S = $$('#azS path');
+    var sg = [$('#azS0'), $('#azS1'), $('#azS2')], t0 = 0, last = -1;
+    SH.alz = function () { t0 = 0; last = -1; };
     TICK.alz = function (t) {
       if (!t0) t0 = t;
       var e = (t - t0) % 12.5, p = clamp(e / 9);
@@ -166,11 +177,8 @@
       R[2].style.opacity = clamp((p - .69) / .12).toFixed(2);
       B.style.transform = 'scale(' + (1 - .08 * p).toFixed(3) + ')';
       S.forEach(function (s) { s.style.strokeWidth = (5 + 7 * p).toFixed(1); });      /* sulci widen */
-      fill.style.transform = 'scaleY(' + p.toFixed(3) + ')';
-      mk.style.transform = 'translateY(' + (p * 500).toFixed(1) + 'px)';
       var k = p < .34 ? 0 : p < .67 ? 1 : 2;
-      sg.forEach(function (g, i) { g.classList.toggle('on', i === k); mri[i].classList.toggle('on', i === k); });
-      if (tag.textContent !== TAGS[k]) tag.textContent = TAGS[k];
+      if (k !== last) { last = k; sg.forEach(function (g, i) { g.classList.toggle('on', i === k); }); }
     };
   })();
 
@@ -379,22 +387,27 @@
       ['fm_emb', ['−2', '−1', '0', '−1', '1', '1', '0', '1', '2']],
       ['fm_blur', ['1', '2', '1', '2', '4', '2', '1', '2', '1']]
     ];
-    var K = $('#cnK'), M = $('#cnMask'), kern = $('#cnKern'), fan = $('#cnFan'), W = 620, H = 310, B = 38, R = 9, SWEEP = 5.5, HOLD = 1.4;
+    var K = $('#cnK'), M = $('#cnMask'), kern = $('#cnKern'), fan = $('#cnFan'), W = 720, H = 360, B = 44, R = 9, SWEEP = 5.5, HOLD = 1.4;
     var cells = [], i;
     for (i = 0; i < 9; i++) { var c = document.createElement('span'); kern.appendChild(c); cells.push(c); }
     function showK(n) { F[n][1].forEach(function (v, j) { cells[j].textContent = v; cells[j].className = v.charAt(0) === '−' ? 'n' : (v === '0' ? '' : 'p'); }); }
     showK(0);
     F.forEach(function (f, n) {
-      var im = document.createElement('img'), x = (n % 4) * 202, y = Math.floor(n / 4) * 107;
+      var im = document.createElement('img');
       im.src = G + f[0] + '.png'; im.alt = '';
-      im.style.left = x + 'px'; im.style.top = y + 'px';
-      im.style.setProperty('--dx', (314 - (x + 95)) + 'px'); im.style.setProperty('--dy', (155 - (y + 47.5)) + 'px'); im.style.setProperty('--i', n);
-      fan.appendChild(im);
+      place(im, n);
     });
+    var more = document.createElement('div'); more.className = 'more'; more.textContent = '···'; place(more, 8);
+    function place(el, n) {      /* 3 x 3 grid; each tile flies out of the centre */
+      var x = (n % 3) * 244, y = Math.floor(n / 3) * 126;
+      el.style.left = x + 'px'; el.style.top = y + 'px';
+      el.style.setProperty('--dx', (360 - (x + 116)) + 'px'); el.style.setProperty('--dy', (184 - (y + 58)) + 'px'); el.style.setProperty('--i', n);
+      fan.appendChild(el);
+    }
     /* architecture: input -> conv -> pool -> conv -> pool -> dense -> output */
     var A = $('#cnArch'), defs = svg('defs', {}, A), mkr = svg('marker', { id: 'cnArrow', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto' }, defs);
     svg('path', { d: 'M0 0 L10 5 L0 10 z', fill: '#6B7280' }, mkr);
-    var root = svg('g', { transform: 'translate(170 0)' }, A), CY = 100, gi = 0;
+    var root = svg('g', { transform: 'translate(71 4) scale(1.45)' }, A), CY = 100, gi = 0;
     function grp(lbl, x) { var g = svg('g', { 'class': 'ab' }, root); g.style.setProperty('--i', gi++); svg('text', { 'class': 't', x: x, y: 222, 'text-anchor': 'middle' }, g).textContent = lbl; return g; }
     var g0 = grp('entrada', 90); svg('image', { href: G + 'dementia_md.jpg', x: 0, y: CY - 45, width: 180, height: 90, preserveAspectRatio: 'none' }, g0);
     function slabs(lbl, x0, n, w, h, pl) { var g = grp(lbl, x0 + (n - 1) * 7 + w / 2); for (var k = 0; k < n; k++) svg('rect', { 'class': 'sl' + (pl ? ' pl' : ''), x: x0 + k * 14, y: CY - h / 2 - k * 4 + n * 2, width: w, height: h, rx: 3 }, g); return x0 + (n - 1) * 14 + w; }
@@ -434,7 +447,7 @@
   /* ---------------- 11 transformer: 0 next-word prediction with attention, 1 how it sits on top of a CNN ---------------- */
   (function () {
     var title = $('#trT');
-    SH.trf = function (sc, s) { title.innerHTML = s ? 'Transformer <em>+ CNN</em>' : 'Transformer: <em>predecir la siguiente palabra</em>'; };
+    SH.trf = function (sc, s) { title.innerHTML = s >= 2 ? 'Mecanismo de <em>atención</em>' : s ? 'Transformer <em>+ CNN</em>' : 'Transformer: <em>predecir la siguiente palabra</em>'; };
 
     /* words */
     var Wv = $('#trW'), BASE = ['El', 'Alzheimer', 'afecta', 'primero', 'a', 'la'];
@@ -508,7 +521,6 @@
     svg('line', { 'class': 'har', x1: 1360, y1: CY2, x2: 1420, y2: CY2 }, Hs);
     var oCN = svg('text', { 'class': 'ho', x: 1480, y: CY2 - 18, 'text-anchor': 'middle', fill: '#9AA3B2' }, Hs); oCN.textContent = 'CN';
     var oAD = svg('text', { 'class': 'ho', x: 1480, y: CY2 + 40, 'text-anchor': 'middle', fill: '#9AA3B2' }, Hs); oAD.textContent = 'AD';
-    svg('text', { 'class': 'cap2', x: 832, y: 540, 'text-anchor': 'middle' }, Hs).textContent = 'La CNN resume la imagen en parches; el transformer los trata como palabras y los relaciona entre sí.';
     var arcG = svg('g', {}, Hs), PAIRS = [[0, 5, .9], [1, 6, .7], [2, 5, .5], [3, 7, .35], [0, 3, .6], [4, 6, .45], [1, 4, .3]], arcs2 = [];
     var tks = [], OP = [.95, .55, .8, .4, .7, .9, .5, .65];
     for (var n = 0; n < 8; n++) {
@@ -533,7 +545,7 @@
     TICK.trf = function (t, sc) { tw0(t, sc); TICK.trf2(t); };
   })();
 
-  /* ---------------- 13 atención: one patch attends to all others; illustrative attention map ---------------- */
+  /* ---------------- 08 atención (third step of the transformer scene): one patch attends to all others; illustrative attention map ---------------- */
   (function () {
     var s = $('#atSvg'), C = 8, Rr = 4, P = 62, q = [3, 1], i, j;
     function wt(x, y) {     /* illustrative: strongest on the ventricles, some on the cortex rim */
@@ -619,10 +631,34 @@
       setTimeout(function () { old.classList.remove('leaving'); if (scenes[cur] !== old) clearScene(old); }, 1500);
     }
     clearScene(scenes[cur]);
+    if (from !== n && scenes[cur].getAttribute('data-tr') === 'tiles' && !reduce) tiles(scenes[cur]);
     step = atEnd ? maxStep(scenes[cur]) : 0;
     setTimeout(render, 34);   /* one frame later, so the cleared scene restarts its transitions */
   }
-  function next() { var m = maxStep(scenes[cur]); if (step < m) { step++; render(); } else go(cur + 1, false); }
+  var exiting = false;
+  function next() {
+    if (exiting) return;
+    var m = maxStep(scenes[cur]);
+    if (step < m) { step++; render(); return; }
+    if (scenes[cur].id === 'cover' && !reduce) {          /* the brain's lines fly apart, then the next scene opens */
+      exiting = true; scenes[cur].classList.add('exit');
+      setTimeout(function () { exiting = false; go(cur + 1, false); }, 1150);
+      return;
+    }
+    go(cur + 1, false);
+  }
+  function tiles(sc) {         /* patch transition: tiles cover the stage, the scene swaps, tiles fall away */
+    var ov = document.createElement('div'), bg = getComputedStyle(sc).backgroundColor, x, y;
+    ov.className = 'tiles';
+    for (y = 0; y < 9; y++) for (x = 0; x < 16; x++) {
+      var c = document.createElement('i'), r = Math.random();
+      c.style.background = r < .12 ? '#00706F' : r < .2 ? '#3D358B' : bg;
+      c.style.setProperty('--d', ((x + y) * .028 + Math.random() * .08).toFixed(3) + 's');
+      ov.appendChild(c);
+    }
+    stage.appendChild(ov);
+    setTimeout(function () { ov.remove(); }, 2400);
+  }
   function prev() { if (step > 0) { step--; render(); } else if (cur > 0) go(cur - 1, true); }
 
   document.addEventListener('keydown', function (e) {
